@@ -1,5 +1,11 @@
 <template>
-  <ol-map :loadTilesWhileAnimating="true" :loadTilesWhileInteracting="true" style="height: 600px">
+  <ol-map
+    ref="mapRef"
+    :loadTilesWhileAnimating="true"
+    :loadTilesWhileInteracting="true"
+    style="height: 600px"
+    @pointermove="hoverFeature"
+  >
     <ol-view ref="view" :center="viewCenter" :zoom="zoom" projection="EPSG:3857" />
     <ol-tile-layer>
       <ol-source-osm />
@@ -14,6 +20,13 @@
         <ol-style-stroke color="#2255ee" :width="1" />
       </ol-style>
     </ol-vector-tile-layer>
+
+    <ol-vector-layer>
+      <ol-source-vector :features="highlightedFeatures" />
+      <ol-style>
+        <ol-style-stroke color="#bb2233" :width="2" />
+      </ol-style>
+    </ol-vector-layer>
     <slot />
   </ol-map>
 </template>
@@ -21,14 +34,44 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue'
 import { fromLonLat } from 'ol/proj'
-import Feature from 'ol/Feature'
+import { type FeatureLike } from 'ol/Feature'
+import { MapBrowserEvent } from 'ol'
+import type MapRef from 'ol/Map'
+import { Layer } from 'ol/layer'
+import RenderFeature from 'ol/render/Feature'
 
 const props = defineProps<{
   center: number[]
 }>()
-
+const mapRef = ref<{ map: MapRef } | null>(null)
 const viewCenter = ref(fromLonLat(props.center))
 const zoom = ref(18)
 const format = inject('ol-format')
-const mvtFormat = new format.MVT({ featureClass: Feature })
+const mvtFormat = new format.MVT({ featureClass: RenderFeature })
+const highlightedFeatures = ref<FeatureLike[]>([])
+
+/**
+ * Only handle click / hover for the layer with class name "feature-layer"
+ */
+function layerFilter(layerCandidate: Layer) {
+  return layerCandidate.getClassName().includes('feature-layer')
+}
+
+/**
+ * show hovered feature in separate layer
+ */
+function hoverFeature(event: MapBrowserEvent<PointerEvent>) {
+  const map = mapRef.value?.map
+  if (!map) {
+    return
+  }
+  const features = map.getFeaturesAtPixel(event.pixel, {
+    hitTolerance: 10,
+    layerFilter
+  })
+  const filteredFeatures = features.filter(
+    (feature) => feature.getProperties().layer === 'Building'
+  )
+  highlightedFeatures.value = filteredFeatures[0] ? [filteredFeatures[0]] : []
+}
 </script>
