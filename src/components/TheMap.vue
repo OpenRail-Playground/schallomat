@@ -19,8 +19,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import {fromLonLat} from "ol/proj";
 
-const center = ref([13.3565907, 52.4815294]);
-const projection = ref('EPSG:4326');
+const center = ref(fromLonLat([13.3565907, 52.4815294]));
+const projection = ref('EPSG:3857');
 const zoom = ref(18);
 </script>
