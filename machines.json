@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Schlagramme",
+    "height": 4,
+    "volume": 130
+  },
+  {
+    "name": "Vibrationsramme",
+    "height": 4,
+    "volume": 122
+  },
+  {
+    "name": "Hydraulikramme",
+    "height": 4,
+    "volume": 126
+  },
+  {
+    "name": "2-Wege-Bagger",
+    "height": 2,
+    "volume": 108
+  },
+  {
+    "name": "Rüttelplatte",
+    "height": 2,
+    "volume": 108
+  }
+]
