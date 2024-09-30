@@ -1,4 +1,4 @@
-# Our Cool Project
+# Schall-O-Mat
 
 *Short description what the project is about*
 
