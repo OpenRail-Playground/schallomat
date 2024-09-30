@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import {ref} from "vue";
+import { ref } from 'vue'
 </script>
 
 <template>
@@ -13,5 +13,4 @@ import {ref} from "vue";
   <RouterView />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
