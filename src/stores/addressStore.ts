@@ -3,7 +3,10 @@ import { defineStore } from 'pinia';
 export interface OSMAddress {
   lat: number;
   lon: number;
-  display_name: string;
+  postcode: string;
+  city: string;
+  street: string;
+  housenumber: string;
 }
 
 export const useAddressStore = defineStore('addressStore', {
@@ -48,7 +51,10 @@ export const useAddressStore = defineStore('addressStore', {
           return {
             lat: lat || element.center.lat,
             lon: lon || element.center.lon,
-            display_name: `${tags["addr:housenumber"] || ''} ${tags["addr:street"] || ''}, ${tags["addr:postcode"] || ''} ${tags["addr:city"] || ''}`
+            postcode: tags["addr:postcode"] || '',
+            city: tags["addr:city"] || '',
+            street: tags["addr:street"] || '',
+            housenumber: tags["addr:housenumber"] || '',
           };
         });
       } catch (error) {
