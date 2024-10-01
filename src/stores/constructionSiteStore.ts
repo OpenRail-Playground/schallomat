@@ -30,12 +30,7 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
       this.isophonesCalculated = false
 
       const isophones = calculateIsophones(
-        this.machines.map((m) => [
-          m.name as string,
-          m.volume as number,
-          m.dayHours as number,
-          m.nightHours as number
-        ])
+        this.machines
       )
 
       this.isophonesDay = isophones.day.reverse()

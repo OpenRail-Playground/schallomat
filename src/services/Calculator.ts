@@ -1,110 +1,115 @@
-// Import necessary libraries
+import type { Machine } from '../stores/constructionMachineStore'
 
-// Global constant for immissions thresholds
-export const IMMISIONS_RICHTWERTE: Record<string, number[]> = {
+// Importiere die Machine-Klasse aus dem machine-Modul
+
+// Globale Konstante für die Immissionsrichtwerte
+// MUSS ZWINGEND in aufsteigender Ordnung sein.
+export const IMMISSION_THRESHOLDS: Record<string, number[]> = {
   day: [45, 50, 55, 60, 65, 70],
   night: [35, 35, 40, 45, 50, 70]
 }
 
-export function calculateIsophones(
-  input: [string, number, number, number][]
-): Record<string, number[]> {
-  const dayVolumes: number[] = []
-  const nightVolumes: number[] = []
+// Funktion zur Berechnung der Isophonen
+export function calculateIsophones(machines: Machine[]): Record<string, number[]> {
+  const dayNoiseLevels: number[] = []
+  const nightNoiseLevels: number[] = []
 
-  for (const machine of input) {
-    // what if under 0
-    if (machine[2] !== 0 ) {
-      dayVolumes.push(machine[1] + dayBonus(machine[2]))
+  for (const machine of machines) {
+    if (machine.dayHours > 0) {
+      dayNoiseLevels.push(machine.volume + calculateDayBonus(machine.dayHours))
     }
-    if (machine[3] !== 0) {
-      nightVolumes.push(machine[1] + nightBonus(machine[3]))
+    if (machine.nightHours > 0) {
+      nightNoiseLevels.push(machine.volume + calculateNightBonus(machine.nightHours))
+    }
+
+    const day_radius: number[] = []
+    const night_radius: number[] = []
+
+    // Berechnung der Radien basierend auf den Geräuschpegeln
+    if (dayNoiseLevels.length !== 0) {
+      dayRadii.push(...calculateRadii(sumNoiseLevels(dayNoiseLevels), IMMISSION_THRESHOLDS.day))
+    }
+    if (nightNoiseLevels.length !== 0) {
+      nightRadii.push(...calculateRadii(
+        sumNoiseLevels(nightNoiseLevels),
+        IMMISSION_THRESHOLDS.night)
+      )
+    }
+
+    return {
+      day: dayRadii,
+      night: nightRadii
     }
   }
 
-  const day_radius: number[] = []
-  const night_radius: number[] = []
-
-  if ((dayVolumes.length !== 0)) {
-    day_radius.push(...calculateRadius(sum_schallleistungen(dayVolumes), IMMISIONS_RICHTWERTE['day']))
-  }
-  if (nightVolumes.length !== 0) {
-    night_radius.push(...calculateRadius(
-      sum_schallleistungen(nightVolumes),
-      IMMISIONS_RICHTWERTE['night'])
-    )
+// Berechnung des Nachtbonus
+  function calculateNightBonus(duration: number): number {
+    if (duration < 2) {
+      return -10
+    } else if (duration < 6) {
+      return -5
+    }
+    return 0
   }
 
-  return {
-    day: day_radius,
-    night: night_radius
+// Berechnung des Tagbonus
+  function calculateDayBonus(duration: number): number {
+    if (duration < 2.5) {
+      return -10
+    } else if (duration < 8) {
+      return -5
+    }
+    return 0
   }
-}
 
-function nightBonus(dauer: number): number {
-  if (dauer < 2) {
-    return -10
-  } else if (dauer < 6) {
-    return -5
+// Summe der Geräuschpegel berechnen
+  function sumNoiseLevels(noiseLevels: number[]): number {
+    return 10 * Math.log10(noiseLevels.reduce((sum, level) => sum + 10 ** (level / 10), 0))
   }
-  return 0
-}
 
-function dayBonus(dauer: number): number {
-  if (dauer < 2.5) {
-    return -10
-  } else if (dauer < 8) {
-    return -5
-  }
-  return 0
-}
+// Funktion zur Berechnung der Radien
+  function calculateRadii(
+    totalNoiseLevel: number,
+    immissionThresholds: number[],
+    sourceHeight = 3.0
+  ): number[] {
+    const radii: number[] = []
 
-function sum_schallleistungen(schallleistung: number[]): number {
-  return 10 * Math.log10(schallleistung.reduce((sum, leistung) => sum + 10 ** (leistung / 10), 0))
-}
+    for (let distance = 5; distance <= 100000; distance += 5) {
+      const soundPressure = calculateSoundPressure(totalNoiseLevel, distance, sourceHeight)
 
-// Function to calculate radius
-function calculateRadius(
-  summenschallleistung: number,
-  immisions_richtwerte: number[],
-  hSource = 3.0
-): number[] {
-  // Define the result dictionary
-  const radius: number[] = []
+      for (let i = 0; i < immissionThresholds.length; i++) {
+        if (soundPressure >= immissionThresholds[i]) {
+          radii[i] = distance
+        }
+      }
 
-  // Iterate over the range with step size of 5
-  for (let r = 5; r <= 100000; r += 5) {
-    const schalldruck = calc_schalldruck(summenschallleistung, r, hSource)
-
-    for (let i = 0; i < immisions_richtwerte.length; i++) {
-      if (schalldruck >= immisions_richtwerte[i]) {
-        radius[i] = r
+      if (soundPressure < Math.min(...immissionThresholds)) {
+        break
       }
     }
 
-    if (schalldruck < Math.min(...immisions_richtwerte)) {
-      break
-    }
+    return radii
   }
 
-  return radius
-}
+// Berechnung des Schalldrucks
+  function calculateSoundPressure(noiseLevel: number, distance: number, sourceHeight: number): number {
+    const heightDifferenceMinus = sourceHeight - 5.1
+    const heightDifferencePlus = sourceHeight + 5.1
+    const distanceSquared = distance ** 2
+    return (
+      noiseLevel +
+      calculateDirectionalCorrection(distanceSquared, heightDifferenceMinus, heightDifferencePlus) -
+      (20 * Math.log10(distance) +
+        11 +
+        (2.8 * distance) / 1000 +
+        4.8 -
+        (heightDifferencePlus / distance) * (17 + 300 / distance))
+    )
+  }
 
-function calc_schalldruck(leistung: number, distance: number, noise_height: number): number {
-  const h_minus = noise_height - 5.1
-  const h_plus = noise_height + 5.1
-  const distance_squared = distance ** 2
-  return (
-    leistung +
-    richtwirkungskorrektur(distance_squared, h_minus, h_plus) -
-    (20 * Math.log10(distance) +
-      11 +
-      (2.8 * distance) / 1000 +
-      4.8 -
-      (h_plus / distance) * (17 + 300 / distance))
-  )
-}
-
-function richtwirkungskorrektur(distance_squared: number, h_minus: number, h_plus: number) {
-  return 10 * Math.log10(1 + (distance_squared + h_minus ** 2) / (distance_squared + h_plus ** 2))
+// Berechnung der Richtwirkungskorrektur
+  function calculateDirectionalCorrection(distanceSquared: number, heightDifferenceMinus: number, heightDifferencePlus: number) {
+    return 10 * Math.log10(1 + (distanceSquared + heightDifferenceMinus ** 2) / (distanceSquared + heightDifferencePlus ** 2))
+  }
 }
