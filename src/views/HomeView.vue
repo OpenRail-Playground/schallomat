@@ -2,6 +2,12 @@
 import { ref } from 'vue'
 import TheMap from '../components/TheMap.vue'
 import MachineWizard from '../components/MachineWizard.vue'
+import TheLegend from '../components/TheLegend.vue';
+import { useConstructionSiteStore } from '../stores/constructionSiteStore';
+import { storeToRefs } from 'pinia';
+
+const constructionSiteStore = useConstructionSiteStore()
+const { currentStep } = storeToRefs(constructionSiteStore)
 
 const home = ref([13.3565907, 52.4815294])
 const isNight = ref(false)
@@ -30,6 +36,7 @@ const isNight = ref(false)
       >
 
       <TheMap :center="home" :night="isNight"></TheMap>
+      <TheLegend v-if="currentStep === 3" />
     </main>
     <aside>
       <MachineWizard />

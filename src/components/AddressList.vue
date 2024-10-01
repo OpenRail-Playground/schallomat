@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h2>Addresses within {{ radius }}m radius</h2>
-
     <div v-if="addressStore.loading">Loading...</div>
     <div v-if="addressStore.error">Error: {{ addressStore.error }}</div>
 
@@ -56,32 +54,36 @@
 <script setup lang="ts">
 import { useAddressStore } from '../stores/addressStore'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { Coordinate } from 'ol/coordinate'
+import { useConstructionSiteStore } from '../stores/constructionSiteStore'
+import { storeToRefs } from 'pinia'
 
 type SortKey = 'postcode' | 'street' | 'city'
 type SortDirection = 'asc' | 'desc'
 
-const props = defineProps<{
-  coordinate: Coordinate
-  radius: number
-}>()
 const addressStore = useAddressStore()
+const constructionSiteStore = useConstructionSiteStore()
 
-const lon = computed(() => props.coordinate[0])
-const lat = computed(() => props.coordinate[1])
+const { center, isophonesCalculated, isophonesDay, isophonesNight } =
+  storeToRefs(constructionSiteStore)
+
+const lon = computed(() => center.value && center.value[0])
+const lat = computed(() => center.value && center.value[1])
 
 // Fetch addresses when the component is mounted
 onMounted(() => {
-  addressStore.fetchAddresses(lat.value, lon.value, props.radius)
+  // addressStore.fetchAddresses(lat.value, lon.value, props.radius)
 })
 
 // Watch for changes in the input props and refetch data if they change
-watch(
-  () => [lat.value, lon.value, props.radius],
-  ([newLat, newLon, newRadius]) => {
-    addressStore.fetchAddresses(newLat, newLon, newRadius)
+watch(isophonesCalculated, async (newValue) => {
+  if (newValue && lon.value && lat.value) {
+    await addressStore.fetchAddresses(
+      lat.value,
+      lon.value,
+      Math.max(...isophonesDay.value, ...isophonesNight.value)
+    )
   }
-)
+})
 
 // Search query for filtering addresses
 const searchQuery = ref('')
