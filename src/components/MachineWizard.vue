@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import MachineConfigurationList from './MachineConfigurationList.vue'
-import { useConstructionSiteStore } from '@/stores/constructionSiteStore'
+import { useConstructionSiteStore } from '../stores/constructionSiteStore'
+import ProgressBar from './ProgressBar.vue'
 
 const { calculateIsophones } = useConstructionSiteStore()
+
+const currentStep = ref(1)
 </script>
 
 <template>
+  <ProgressBar :num-steps="3" :current="currentStep" @select="(index) => (currentStep = index)" />
+
   <MachineConfigurationList />
 
   <button
