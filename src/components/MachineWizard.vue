@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import MachineConfigurationList from './MachineConfigurationList.vue'
+import { useConstructionSiteStore } from '@/stores/constructionSiteStore'
+
+const { calculateIsophones } = useConstructionSiteStore()
 </script>
 
 <template>
@@ -11,6 +14,7 @@ import MachineConfigurationList from './MachineConfigurationList.vue'
     data-width="full"
     title="Berechnen"
     type="button"
+    @click="calculateIsophones"
   >
     Berechnen
   </button>

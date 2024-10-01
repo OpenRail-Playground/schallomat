@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import TheMap from '../components/TheMap.vue'
 import AddressList from '../components/AddressList.vue'
-import CircleComponent from '../components/CircleComponent.vue'
 import MachineWizard from '../components/MachineWizard.vue'
 import { storeToRefs } from 'pinia'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
@@ -16,13 +15,20 @@ const { center } = storeToRefs(useConstructionSiteStore())
 <template>
   <div class="base-layout">
     <main>
-      <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label">Tagzeitraum</label>
+      <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label"
+        >Tagzeitraum</label
+      >
       <input type="checkbox" role="switch" class="elm-toggle" id="day-night-toggle" />
-      <label class="elm-label" for="day-night-toggle" id="night-label" data-icon-before="night" data-icon-variant-before="20-outline">Nachtzeitraum</label>
+      <label
+        class="elm-label"
+        for="day-night-toggle"
+        id="night-label"
+        data-icon-before="night"
+        data-icon-variant-before="20-outline"
+        >Nachtzeitraum</label
+      >
 
-      <TheMap :center="home">
-        <CircleComponent v-if="center" :center="center" :radius="radius" />
-      </TheMap>
+      <TheMap :center="home"> </TheMap>
     </main>
     <aside>
       <MachineWizard />
