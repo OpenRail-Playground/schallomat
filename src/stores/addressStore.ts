@@ -1,5 +1,26 @@
 import { defineStore } from 'pinia'
 import { type Address, fetchAddressInRadius } from '../services/OverpassApi'
+import { filterAddressesWithinCircle } from '../utils/map'
+
+function getIsophonesWithAddresses(
+  addresses: Address[],
+  indexes: number[],
+  lon: number,
+  lat: number,
+  key: 'isophoneIndexDay' | 'isophoneIndexNight'
+) {
+  const addressMap = new Map<number, Address[]>()
+  let restData = [...addresses]
+  indexes.forEach((radius, index) => {
+    const { matches, rest } = filterAddressesWithinCircle(restData, [lon, lat], radius)
+    matches.forEach((match) => {
+      match[key] = index
+    })
+    addressMap.set(index, matches)
+    restData = rest
+  })
+  return Array.from(addressMap.values()).flat()
+}
 
 export const useAddressStore = defineStore('addressStore', {
   state: () => ({
@@ -17,50 +38,32 @@ export const useAddressStore = defineStore('addressStore', {
         isophonesNight: number[]
       }
     ) {
-      const addressExists = (
-        lat: number,
-        lon: number,
-        isophoneIndexDay?: number,
-        isophoneIndexNight?: number
-      ) => {
-        return this.addresses.some(
-          (entry) =>
-            (entry.lat === lat &&
-              entry.lon === lon &&
-              isophoneIndexDay !== undefined &&
-              entry.isophoneIndexDay === isophoneIndexDay) ||
-            (isophoneIndexNight !== undefined && entry.isophoneIndexNight === isophoneIndexNight)
-        )
-      }
-
-      const processIsophones = async (
-        lat: number,
-        lon: number,
-        radii: number[],
-        isNight: boolean
-      ) => {
-        for (let i = 0; i < radii.length; i++) {
-          const radius = radii[i]
-          const addressData = await fetchAddressInRadius(lat, lon, radius)
-
-          if (!addressExists(lat, lon, isNight ? undefined : i, isNight ? i : undefined)) {
-            this.addresses.push(
-              ...addressData.map((address) => ({
-                ...address,
-                ...(isNight ? { isophoneIndexNight: i } : { isophoneIndexDay: i })
-              }))
-            )
-          }
-        }
-      }
-
+      const maxRadius = Math.max(...isophones.isophonesDay, ...isophones.isophonesNight)
       const { isophonesDay, isophonesNight } = isophones
-      const isophonesDaySorted = isophonesDay.sort()
-      const isophonesNightSorted = isophonesNight.sort()
+      const isophonesDaySorted = isophonesDay.sort((a, b) => a - b)
+      const isophonesNightSorted = isophonesNight.sort((a, b) => a - b)
 
       try {
-        await processIsophones(lat, lon, isophonesDaySorted, false)
-        await processIsophones(lat, lon, isophonesNightSorted, true)
+        const addressesInMaxRadius = await fetchAddressInRadius(lat, lon, maxRadius)
+
+        const dayMapArray = getIsophonesWithAddresses(
+          addressesInMaxRadius,
+          isophonesDaySorted,
+          lon,
+          lat,
+          'isophoneIndexDay'
+        )
+
+        const nightMapArray = getIsophonesWithAddresses(
+          addressesInMaxRadius,
+          isophonesNightSorted,
+          lon,
+          lat,
+          'isophoneIndexNight'
+        )
+        console.log({ dayMap: dayMapArray, nightMap: nightMapArray })
+
+        this.addresses = [...dayMapArray, ...nightMapArray]
       } catch (error) {
         this.error = (error as Error).message
         console.error('Error fetching addresses:', error)
