@@ -3,11 +3,14 @@ import MachineConfigurationList from './MachineConfigurationList.vue'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import ProgressBar from './ProgressBar.vue'
 import { storeToRefs } from 'pinia'
+import AddressList from './AddressList.vue';
+import { ref } from 'vue';
 
 const constructionSiteStore = useConstructionSiteStore()
-const { machines, currentStep } = storeToRefs(constructionSiteStore)
-
+const { center, machines, currentStep } = storeToRefs(constructionSiteStore)
 const { calculateIsophones, setStep } = constructionSiteStore
+
+const radius = ref(100)
 </script>
 
 <template>
@@ -29,6 +32,9 @@ const { calculateIsophones, setStep } = constructionSiteStore
   >
     Berechnen
   </button>
+
+  <AddressList v-if="currentStep === 3 && center" :coordinate="center" :radius="radius" />
+
 </template>
 
 <style lang="css" scoped>
