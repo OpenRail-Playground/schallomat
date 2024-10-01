@@ -31,10 +31,10 @@
     </ol-vector-layer>
 
     <ol-vector-layer>
-      <ol-interaction-draw v-if="!draftMachine?.position" type="Point" @drawend="setPosition" />
-      <ol-source-vector v-if="center">
+      <ol-interaction-draw type="Point" @drawend="setPosition" />
+      <ol-source-vector v-if="constructionSiteCenter">
         <ol-feature>
-          <ol-geom-point :coordinates="fromLonLat(center)" />
+          <ol-geom-point :coordinates="fromLonLat(constructionSiteCenter)" />
           <ol-style>
             <ol-style-stroke color="red" :width="2" />
             <ol-style-fill color="rgba(255,255,255,0.1)" />
@@ -59,6 +59,8 @@ import RenderFeature from 'ol/render/Feature'
 import type { Coordinate } from 'ol/coordinate'
 import { Fill, Stroke, Style } from 'ol/style'
 import type { DrawEvent } from 'ol/interaction/Draw'
+import { useConstructionSiteStore } from '../stores/constructionSiteStore'
+import { storeToRefs } from 'pinia'
 
 const markerIcon = new URL(`../assets/db-ic-maps-map-pin-24.png`, import.meta.url).href
 
@@ -73,7 +75,7 @@ const mvtFormat = new format.MVT({ featureClass: RenderFeature })
 const highlightedFeatures = ref<FeatureLike[]>([])
 
 const constructionSiteStore = useConstructionSiteStore()
-const { draftMachine, center } = storeToRefs(constructionSiteStore)
+const { center: constructionSiteCenter } = storeToRefs(constructionSiteStore)
 const { setConstructionSiteCenter } = constructionSiteStore
 
 /**
