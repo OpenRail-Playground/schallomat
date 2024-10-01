@@ -40,6 +40,7 @@ const { center } = storeToRefs(useConstructionSiteStore())
   grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  gap: 1rem;
 }
 
 footer {

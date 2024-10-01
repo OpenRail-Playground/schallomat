@@ -4,14 +4,20 @@ import MachineConfigurationList from './MachineConfigurationList.vue'
 
 <template>
   <MachineConfigurationList />
+
+  <button
+    class="elm-button calculate"
+    data-variant="brand-primary"
+    data-width="full"
+    title="Berechnen"
+    type="button"
+  >
+    Berechnen
+  </button>
 </template>
 
 <style lang="css" scoped>
-dialog {
-  display: block;
-}
-
-dialog::backdrop {
-  color: rgba(0, 0, 0, 0.5);
+.calculate {
+  margin-top: 1rem;
 }
 </style>

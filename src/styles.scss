@@ -1,2 +1,24 @@
 @import '../node_modules/@db-ui/core/sources/css/rollup.assets-paths';
 @import '../node_modules/@db-ui/core/sources/css/enterprise/db-ui-core';
+
+html,
+body {
+  font-family: Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+h1 {
+  margin: 0 2rem 0 0.5rem;
+  display: inline-block;
+}
+
+.base-layout {
+  padding: 0 1rem 1rem 1rem;
+}

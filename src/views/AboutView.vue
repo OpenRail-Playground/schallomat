@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main>
+  <main class="base-layout">
     <h2>Schall-O-Mat</h2>
     <p>
       This program calculates which houses (addresses) are affected by the noise of a construction
