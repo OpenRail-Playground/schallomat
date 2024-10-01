@@ -4,7 +4,7 @@
       <ol-feature>
         <ol-geom-circle :center="centerFromLonLat" :radius="radius" />
         <ol-style>
-          <ol-style-stroke :color="color" :width="3"></ol-style-stroke>
+          <ol-style-stroke :color="color" :width="5"></ol-style-stroke>
           <ol-style-fill color="rgba(255,255,0,0.0)"></ol-style-fill>
         </ol-style>
       </ol-feature>

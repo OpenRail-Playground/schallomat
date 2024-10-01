@@ -8,6 +8,7 @@ import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 
 const home = ref([13.3565907, 52.4815294])
 const radius = ref(100)
+const isNight = ref(false)
 
 const { center } = storeToRefs(useConstructionSiteStore())
 </script>
@@ -18,7 +19,13 @@ const { center } = storeToRefs(useConstructionSiteStore())
       <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label"
         >Tagzeitraum</label
       >
-      <input type="checkbox" role="switch" class="elm-toggle" id="day-night-toggle" />
+      <input
+        type="checkbox"
+        role="switch"
+        class="elm-toggle"
+        id="day-night-toggle"
+        v-model="isNight"
+      />
       <label
         class="elm-label"
         for="day-night-toggle"
@@ -28,7 +35,7 @@ const { center } = storeToRefs(useConstructionSiteStore())
         >Nachtzeitraum</label
       >
 
-      <TheMap :center="home"> </TheMap>
+      <TheMap :center="home" :night="isNight"></TheMap>
     </main>
     <aside>
       <MachineWizard />

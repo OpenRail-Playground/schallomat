@@ -47,10 +47,10 @@
     <CircleComponent
       v-for="(isophone, index) of isophones"
       v-if="constructionSiteCenter"
-      :center="center"
+      :center="constructionSiteCenter"
       :radius="isophone"
       :track="isophone"
-      :color="getIsophoneColor(index)"
+      :color="getIsophoneColor(Number(index))"
     />
 
     <slot />
@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { fromLonLat, toLonLat } from 'ol/proj'
 import { type FeatureLike } from 'ol/Feature'
 import { MapBrowserEvent } from 'ol'
@@ -70,12 +70,13 @@ import { Fill, Stroke, Style } from 'ol/style'
 import type { DrawEvent } from 'ol/interaction/Draw'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
-import CircleComponent from '@/components/CircleComponent.vue'
+import CircleComponent from './CircleComponent.vue'
 
 const markerIcon = new URL(`../assets/db-ic-maps-map-pin-24.png`, import.meta.url).href
 
 const props = defineProps<{
   center: Coordinate
+  night: boolean
 }>()
 const mapRef = ref<{ map: MapRef } | null>(null)
 const viewCenter = ref(fromLonLat(props.center))
@@ -85,8 +86,16 @@ const mvtFormat = new format.MVT({ featureClass: RenderFeature })
 const highlightedFeatures = ref<FeatureLike[]>([])
 
 const constructionSiteStore = useConstructionSiteStore()
-const { center: constructionSiteCenter, isophones } = storeToRefs(constructionSiteStore)
+const {
+  center: constructionSiteCenter,
+  isophonesDay,
+  isophonesNight
+} = storeToRefs(constructionSiteStore)
 const { setConstructionSiteCenter } = constructionSiteStore
+
+const isophones = computed(() => {
+  return props.night ? isophonesNight.value : isophonesDay.value
+})
 
 /**
  * Only handle click / hover for the layer with class name "feature-layer"

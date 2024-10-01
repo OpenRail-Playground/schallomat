@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useConstructionMachineStore, type Machine } from '../stores/constructionMachineStore'
+import { type Machine, useConstructionMachineStore } from '../stores/constructionMachineStore'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
 
@@ -17,7 +17,12 @@ const isDisabled = computed(() => {
 })
 
 function addMachine() {
-  emit('add', machineConfig.value)
+  const machine = {
+    ...(machines.value.find((m) => m.name === machineConfig.value.name) || {}),
+    ...machineConfig.value
+  }
+
+  emit('add', machine)
   machineConfig.value = { dayHours: 0, nightHours: 0, name: '' }
 }
 </script>

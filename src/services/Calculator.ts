@@ -1,25 +1,26 @@
 // Import necessary libraries
 
 // Global constant for immissions thresholds
-const IMMISIONS_RICHTWERTE: Record<string, number[]> = {
+export const IMMISIONS_RICHTWERTE: Record<string, number[]> = {
   day: [45, 50, 55, 60, 65, 70],
   night: [35, 35, 40, 45, 50, 70]
 }
 
-// Expects Name, Volume, DauerDay, DauerNight
-export function calculate(input: [[string, number, number, number]]): Record<string, number[]> {
-  const days: [number] = []
-  const nights: [number] = []
+export function calculateIsophones(
+  input: [string, number, number, number][]
+): Record<string, number[]> {
+  const dayVolumes: number[] = []
+  const nightVolumes: number[] = []
 
   for (const machine of input) {
     // what if under 0
-    days.push([machine[1] + dayBonus(machine[2])])
-    nights.push([machine[1] + nightBonus(machine[3])])
+    dayVolumes.push(machine[1] + dayBonus(machine[2]))
+    nightVolumes.push(machine[1] + nightBonus(machine[3]))
   }
 
   return {
-    day: calculateRadius(sum_schallleistungen(days), IMMISIONS_RICHTWERTE['day']),
-    night: calculateRadius(sum_schallleistungen(nights), IMMISIONS_RICHTWERTE['night'])
+    day: calculateRadius(sum_schallleistungen(dayVolumes), IMMISIONS_RICHTWERTE['day']),
+    night: calculateRadius(sum_schallleistungen(nightVolumes), IMMISIONS_RICHTWERTE['night'])
   }
 }
 
@@ -49,7 +50,7 @@ function sum_schallleistungen(schallleistung: number[]): number {
 function calculateRadius(
   summenschallleistung: number,
   immisions_richtwerte: number[],
-  hSource: number = 3.0
+  hSource = 3.0
 ): number[] {
   // Define the result dictionary
   const radius: number[] = []
@@ -64,7 +65,7 @@ function calculateRadius(
       }
     }
 
-    if (schalldruck < Math.min(immisions_richtwerte)) {
+    if (schalldruck < Math.min(...immisions_richtwerte)) {
       break
     }
   }
@@ -72,8 +73,7 @@ function calculateRadius(
   return radius
 }
 
-function calc_schalldruck(leistung: number, distance: number): number {
-  const noise_height = 3.0
+function calc_schalldruck(leistung: number, distance: number, noise_height: number): number {
   const h_minus = noise_height - 5.1
   const h_plus = noise_height + 5.1
   const distance_squared = distance ** 2
