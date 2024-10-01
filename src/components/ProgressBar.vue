@@ -11,12 +11,12 @@ const active = computed(() => (index: number) => (current === index ? 'active' :
 
 <template>
   <div id="progress">
-    <span v-for="index in steps" :key="index" :class="active(index)" @click="emit('select', index)">{{ index }}</span>
+    <button v-for="index in steps" :key="index" :class="active(index)" @click="emit('select', index)">{{ index }}</button>
   </div>
 </template>
 
 <style lang="css" scoped>
-#progress > span {
+button {
   display: inline-block;
   background: #55b9e6;
   border-radius: 50%;
@@ -25,13 +25,19 @@ const active = computed(() => (index: number) => (current === index ? 'active' :
   margin: 0 0.5rem 0.5rem;
   color: white;
   text-align: center;
-  line-height: 60px;
-  font-size: 48px;
+  line-height: 0;
+  font-size: 40px;
   border: 2px solid black;
+  cursor: pointer;
 }
 
-#progress > span.active {
-  background: #309fd1;
-  border-color: #309fd1;
+button:hover {
+  background: #358eb7;
+}
+
+button.active {
+  background: #115270;
+  border-color: #115270;
+  cursor: not-allowed;
 }
 </style>
