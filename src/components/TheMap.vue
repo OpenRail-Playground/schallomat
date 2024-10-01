@@ -19,9 +19,9 @@
       <ol-style :overrideStyleFunction="styleFunction" />
     </ol-vector-tile-layer>
 
-    <ol-tile-layer>
-      <ol-source-tile-debug />
-    </ol-tile-layer>
+    <!--    <ol-tile-layer>
+          <ol-source-tile-debug />
+        </ol-tile-layer>-->
 
     <ol-vector-layer>
       <ol-source-vector :features="highlightedFeatures" />
