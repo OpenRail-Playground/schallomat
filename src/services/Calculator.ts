@@ -1,13 +1,7 @@
 import type { Machine } from '../stores/constructionMachineStore'
+import { getImmissionThresholds } from './Isophones'
 
-// Importiere die Machine-Klasse aus dem machine-Modul
-
-// Globale Konstante für die Immissionsrichtwerte
-// MUSS ZWINGEND in aufsteigender Ordnung sein.
-export const IMMISSION_THRESHOLDS: Record<string, number[]> = {
-  day: [45, 50, 55, 60, 65, 70],
-  night: [35, 35, 40, 45, 50, 70]
-}
+export const IMMISSION_THRESHOLDS = getImmissionThresholds()
 
 // Funktion zur Berechnung der Isophonen
 export function calculateIsophones(machines: Machine[]) {

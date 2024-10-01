@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { isophoneLevels } from '../services/Isophones'
+import { computed } from 'vue'
+import { isophoneLevels, type TimeOfDay } from '../services/Isophones'
+
+const props = defineProps<{ time: TimeOfDay }>()
+
+const levels = computed(() => isophoneLevels[props.time])
 </script>
 
 <template>
   <div class="container">
-    <div v-for="(color, level) in isophoneLevels" :key="level">
+    <div v-for="(color, level) in levels" :key="level">
       <span :style="{ background: color }">&nbsp;</span>
       <span>&gt; {{ level }} dB</span>
     </div>

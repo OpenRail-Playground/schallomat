@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import TheMap from '../components/TheMap.vue'
 import MachineWizard from '../components/MachineWizard.vue'
-import TheLegend from '../components/TheLegend.vue';
-import { useConstructionSiteStore } from '../stores/constructionSiteStore';
-import { storeToRefs } from 'pinia';
+import TheLegend from '../components/TheLegend.vue'
+import { useConstructionSiteStore } from '../stores/constructionSiteStore'
+import { storeToRefs } from 'pinia'
+import type { TimeOfDay } from '../services/Isophones'
 
 const constructionSiteStore = useConstructionSiteStore()
 const { currentStep } = storeToRefs(constructionSiteStore)
 
 const home = ref([13.3565907, 52.4815294])
-const isNight = ref(false)
+const time = ref(false)
+
+const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
 </script>
 
 <template>
@@ -24,7 +27,7 @@ const isNight = ref(false)
         role="switch"
         class="elm-toggle"
         id="day-night-toggle"
-        v-model="isNight"
+        v-model="time"
       />
       <label
         class="elm-label"
@@ -35,8 +38,8 @@ const isNight = ref(false)
         >Nachtzeitraum</label
       >
 
-      <TheMap :center="home" :night="isNight"></TheMap>
-      <TheLegend v-if="currentStep === 3" />
+      <TheMap :center="home" :time="timeOfDay"></TheMap>
+      <TheLegend v-if="currentStep === 3" :time="timeOfDay" />
     </main>
     <aside>
       <MachineWizard />

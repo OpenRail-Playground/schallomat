@@ -51,7 +51,7 @@
         :center="constructionSiteCenter"
         :radius="isophone"
         :track="isophone"
-        :color="getIsophoneColor(Number(index))"
+        :color="getIsophoneColor(Number(index), time)"
       />
     </div>
 
@@ -73,14 +73,11 @@ import type { DrawEvent } from 'ol/interaction/Draw'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
 import CircleComponent from './CircleComponent.vue'
-import { getIsophoneColor } from '../services/Isophones'
+import { getIsophoneColor, type TimeOfDay } from '../services/Isophones'
 
 const markerIcon = new URL(`../assets/db-ic-maps-map-pin-24.png`, import.meta.url).href
 
-const props = defineProps<{
-  center: Coordinate
-  night: boolean
-}>()
+const props = defineProps<{ center: Coordinate; time: TimeOfDay }>()
 const mapRef = ref<{ map: MapRef } | null>(null)
 const viewCenter = ref(fromLonLat(props.center))
 const zoom = ref(18)
@@ -97,7 +94,7 @@ const {
 const { setConstructionSiteCenter } = constructionSiteStore
 
 const isophones = computed(() => {
-  return props.night ? isophonesNight.value : isophonesDay.value
+  return props.time === 'night' ? isophonesNight.value : isophonesDay.value
 })
 
 /**
