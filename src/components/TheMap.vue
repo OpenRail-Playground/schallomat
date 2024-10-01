@@ -73,6 +73,7 @@ import type { DrawEvent } from 'ol/interaction/Draw'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
 import CircleComponent from './CircleComponent.vue'
+import { getIsophoneColor } from '../services/Isophones'
 
 const markerIcon = new URL(`../assets/db-ic-maps-map-pin-24.png`, import.meta.url).href
 
@@ -187,11 +188,5 @@ function setPosition(event: DrawEvent) {
   const [x, y] = event.feature.getGeometry()!.getExtent()
   const position = toLonLat([x, y])
   setConstructionSiteCenter(position)
-}
-
-function getIsophoneColor(index: number) {
-  return ['#824c7c', '#891d20', '#cb2e34', '#ee7821', '#996a29', '#f1d90b', '#00694c', '#66aa22'][
-    index
-  ]
 }
 </script>
