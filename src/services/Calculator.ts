@@ -26,10 +26,10 @@ export function calculateIsophones(
   const night_radiums: number[] = []
 
   if (dayVolumes.length != 0) {
-    day_radiums.push(calculateRadius(sum_schallleistungen(dayVolumes), IMMISIONS_RICHTWERTE['day']))
+    day_radiums.push.apply(calculateRadius(sum_schallleistungen(dayVolumes), IMMISIONS_RICHTWERTE['day']))
   }
   if (nightVolumes.length != 0) {
-    night_radiums.push(calculateRadius(
+    night_radiums.push.apply(calculateRadius(
       sum_schallleistungen(nightVolumes),
       IMMISIONS_RICHTWERTE['night'])
     )
