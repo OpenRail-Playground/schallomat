@@ -29,6 +29,11 @@
         <ol-style-stroke color="#bb2233" :width="2" />
       </ol-style>
     </ol-vector-layer>
+
+    <ol-vector-layer v-if="draftMachine && !draftMachine.position">
+      <ol-interaction-draw type="Point" @draw-end="setPosition" />
+    </ol-vector-layer>
+
     <slot />
   </ol-map>
 </template>
@@ -43,6 +48,9 @@ import { Layer } from 'ol/layer'
 import RenderFeature from 'ol/render/Feature'
 import type { Coordinate } from 'ol/coordinate'
 import { Fill, Stroke, Style } from 'ol/style'
+import { useConstructionSiteStore } from '../stores/constructionSiteStore'
+import { storeToRefs } from 'pinia'
+import type { DrawEvent } from 'ol/interaction/Draw'
 
 const props = defineProps<{
   center: Coordinate
@@ -53,6 +61,8 @@ const zoom = ref(18)
 const format = inject('ol-format')
 const mvtFormat = new format.MVT({ featureClass: RenderFeature })
 const highlightedFeatures = ref<FeatureLike[]>([])
+
+const { draftMachine } = storeToRefs(useConstructionSiteStore())
 
 /**
  * Only handle click / hover for the layer with class name "feature-layer"
@@ -136,5 +146,8 @@ const styleFunction = (feature: RenderFeature, style: Style) => {
     return buildingStyle(style)
   }
   return style // Return null for all other features
+}
+
+function setPosition(event: DrawEvent) {
 }
 </script>
