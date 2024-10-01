@@ -62,6 +62,44 @@ function layerFilter(layerCandidate: Layer) {
 }
 
 /**
+ * Style for buildings
+ */
+function buildingStyle(style: Style) {
+  const newStyle = style.clone()
+  newStyle.setFill(
+    new Fill({
+      color: 'rgba(255, 165, 0, 0.6)' // Orange fill with some transparency
+    })
+  )
+  newStyle.setStroke(
+    new Stroke({
+      color: '#ff7800', // Orange border
+      width: 1
+    })
+  )
+  return newStyle
+}
+
+/**
+ * Style for buildings
+ */
+function inCircleStyle(style: Style) {
+  const newStyle = style.clone()
+  newStyle.setFill(
+    new Fill({
+      color: 'rgba(0, 0, 255, 0.6)' // Orange fill with some transparency
+    })
+  )
+  newStyle.setStroke(
+    new Stroke({
+      color: '#0000FF', // Orange border
+      width: 1
+    })
+  )
+  return newStyle
+}
+
+/**
  * show hovered feature in separate layer
  */
 function hoverFeature(event: MapBrowserEvent<PointerEvent>) {
@@ -81,26 +119,21 @@ function hoverFeature(event: MapBrowserEvent<PointerEvent>) {
   console.log(highlightedFeatures.value)
 }
 
-const styleFunction = (feature: FeatureLike, style: Style) => {
+const styleFunction = (feature: RenderFeature, style: Style) => {
   // Check the layer name or other properties
   const layer = feature.get('layer') // Assuming the layer name is stored in the 'layer' property
-  const kind = feature.get('class') // You may need to adjust this property name based on your data
 
   // Show only buildings
   if (layer === 'Building') {
-    const newStyle = style.clone()
-    newStyle.setFill(
-      new Fill({
-        color: 'rgba(255, 165, 0, 0.6)' // Orange fill with some transparency
-      })
-    )
-    newStyle.setStroke(
-      new Stroke({
-        color: '#ff7800', // Orange border
-        width: 1
-      })
-    )
-    return newStyle
+    // TODO: check if building intersects with circle geom and use from other layer
+    const featureGeometry = feature.getGeometry()
+    /*const circleGeometry = new Circle(props.center, 100)
+
+    if (circleGeometry.intersectsExtent(featureGeometry.getExtent())) {
+      return inCircleStyle
+    }*/
+
+    return buildingStyle(style)
   }
   return style // Return null for all other features
 }
