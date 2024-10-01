@@ -7,6 +7,7 @@ export interface OSMAddress {
   city: string
   street: string
   housenumber: string
+  levels: number
 }
 
 export const useAddressStore = defineStore('addressStore', {
@@ -53,8 +54,9 @@ export const useAddressStore = defineStore('addressStore', {
             lon: lon || element.center.lon,
             postcode: tags['addr:postcode'] || '',
             city: tags['addr:city'] || '',
-            street: tags['addr:street'] || '',
-            housenumber: tags['addr:housenumber'] || ''
+            street: tags['addr:street'] || tags['addr:place'] || '',
+            housenumber: tags['addr:housenumber'] || '',
+            levels: Number(tags['building:levels']) || ''
           }
         })
       } catch (error) {

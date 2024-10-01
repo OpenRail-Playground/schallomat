@@ -5,7 +5,7 @@ import AddressList from '../components/AddressList.vue'
 import CircleComponent from '../components/CircleComponent.vue'
 
 const center = ref([13.3565907, 52.4815294])
-const radius = ref(50)
+const radius = ref(100)
 </script>
 
 <template>

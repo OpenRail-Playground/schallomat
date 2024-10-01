@@ -16,20 +16,32 @@
 
       <!-- Address table -->
       <table>
+        <caption>
+          Betroffene Adressen im gewählten Bereich. Sortierung:
+          {{
+            sortDirection === 'desc' ? 'absteigend' : 'aufsteigend'
+          }}
+          nach
+          {{
+            sortKey
+          }}.
+        </caption>
         <thead>
           <tr>
-            <th @click="sortBy('postcode')">Postcode</th>
-            <th @click="sortBy('street')">Street</th>
-            <th>Housenumber</th>
-            <th @click="sortBy('city')">City</th>
+            <th @click="sortBy('city')" :class="getSortClass('city')">City</th>
+            <th @click="sortBy('postcode')" :class="getSortClass('postcode')">Postcode</th>
+            <th @click="sortBy('street')" :class="getSortClass('street')">Street</th>
+            <th class="unsortable">Housenumber</th>
+            <th class="unsortable">Etagen</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(address, index) in filteredAndSortedAddresses" :key="index">
+            <td>{{ address.city }}</td>
             <td>{{ address.postcode }}</td>
             <td>{{ address.street }}</td>
             <td>{{ address.housenumber }}</td>
-            <td>{{ address.city }}</td>
+            <td>{{ address.levels }}</td>
           </tr>
         </tbody>
       </table>
@@ -44,6 +56,9 @@
 <script setup lang="ts">
 import { useAddressStore } from '../stores/addressStore'
 import { computed, onMounted, ref, watch } from 'vue'
+
+type SortKey = 'postcode' | 'street' | 'city'
+type SortDirection = 'asc' | 'desc'
 
 const props = defineProps<{
   coordinate: number[]
@@ -71,8 +86,12 @@ watch(
 const searchQuery = ref('')
 
 // State for sorting
-const sortKey = ref<'postcode' | 'street' | 'city'>('postcode')
-const sortDirection = ref<'asc' | 'desc'>('asc')
+const sortKey = ref<SortKey>('postcode')
+const sortDirection = ref<SortDirection>('asc')
+
+function getSortClass(key: SortKey) {
+  return sortKey.value === key ? sortDirection.value : undefined
+}
 
 // Method to sort the table by a given column
 // Method to sort the table by a given column
@@ -128,11 +147,15 @@ table {
 }
 
 th {
-  cursor: pointer;
   padding: 0.5rem;
   text-align: left;
   background-color: #f4f4f4;
   border-bottom: 2px solid #ddd;
+  position: relative;
+}
+
+th:not(.unsortable) {
+  cursor: pointer;
 }
 
 td {
@@ -142,5 +165,19 @@ td {
 
 th:hover {
   background-color: #eaeaea;
+}
+
+th:after {
+  right: 0;
+  position: absolute;
+  margin-right: 0.5rem;
+}
+
+th.asc:after {
+  content: '↑';
+}
+
+th.desc:after {
+  content: '↓';
 }
 </style>
