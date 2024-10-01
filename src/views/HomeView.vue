@@ -9,16 +9,16 @@ const radius = ref(50)
 </script>
 
 <template>
-  <main>
+  <section>
     <TheMap :center="center">
       <CircleComponent :coordinate="center" :radius="radius" />
     </TheMap>
     <AddressList :coordinate="center" :radius="radius" />
-  </main>
+  </section>
 </template>
 
 <style scoped>
-main {
+section {
   width: 100%;
   height: 400px;
 }

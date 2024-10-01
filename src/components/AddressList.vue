@@ -118,6 +118,10 @@ const filteredAndSortedAddresses = computed(() => {
   width: 100%;
 }
 
+h2 {
+  margin: 0.3rem 0.6rem;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import logo from './assets/logo.png'
 </script>
 
 <template>
   <header>
-    <h1>Schallomat</h1>
+    <img :src="logo" id="logo" />
     <nav>
       <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
     </nav>
   </header>
 
@@ -14,8 +16,9 @@ import { RouterLink, RouterView } from 'vue-router'
 </template>
 
 <style>
-html, body {
-  font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+html,
+body {
+  font-family: Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding: 0;
   margin: 0;
 }
@@ -24,6 +27,11 @@ html, body {
   flex-direction: column;
   height: 100vh;
 }
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center
+}
 main {
   position: relative;
 }
@@ -31,10 +39,15 @@ h1 {
   margin: 0 2rem 0 0.5rem;
   display: inline-block;
 }
-h2 {
-  margin: 0.3rem 0.6rem;
+#logo {
+  width: 70px;
+  margin-right: 1rem;
 }
 nav {
-  display: inline;
+  display: flex;
+  gap: 1rem;
+}
+nav > a {
+  text-decoration: none;
 }
 </style>
