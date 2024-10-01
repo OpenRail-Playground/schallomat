@@ -44,15 +44,16 @@
       </ol-source-vector>
     </ol-vector-layer>
 
-    <CircleComponent
-      v-for="(isophone, index) of isophones"
-      :key="index"
-      v-if="constructionSiteCenter"
-      :center="constructionSiteCenter"
-      :radius="isophone"
-      :track="isophone"
-      :color="getIsophoneColor(Number(index))"
-    />
+    <div v-if="constructionSiteCenter">
+      <CircleComponent
+        v-for="(isophone, index) of isophones"
+        :key="index"
+        :center="constructionSiteCenter"
+        :radius="isophone"
+        :track="isophone"
+        :color="getIsophoneColor(Number(index))"
+      />
+    </div>
 
     <slot />
   </ol-map>
