@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import machines from "../../machines.json"
 import type { Coordinate } from 'ol/coordinate'
+
 export interface Machine {
-  name: string
-  height: number
-  volume: number
+  name?: string
+  height?: number
+  volume?: number
   position?: Coordinate
+  dayHours?: number
+  nightHours?: number
 }
 
 export const useConstructionMachineStore = defineStore('constructionMachineStore', {

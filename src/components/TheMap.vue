@@ -30,8 +30,8 @@
       </ol-style>
     </ol-vector-layer>
 
-    <ol-vector-layer v-if="draftMachine && !draftMachine.position">
-      <ol-interaction-draw type="Point" @draw-end="setPosition" />
+    <ol-vector-layer v-if="!draftMachine?.position">
+      <ol-interaction-draw type="Point" @drawend="setPosition" />
     </ol-vector-layer>
 
     <slot />
@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import { fromLonLat } from 'ol/proj'
+import { fromLonLat, toLonLat } from 'ol/proj'
 import { type FeatureLike } from 'ol/Feature'
 import { MapBrowserEvent } from 'ol'
 import type MapRef from 'ol/Map'
@@ -62,7 +62,9 @@ const format = inject('ol-format')
 const mvtFormat = new format.MVT({ featureClass: RenderFeature })
 const highlightedFeatures = ref<FeatureLike[]>([])
 
-const { draftMachine } = storeToRefs(useConstructionSiteStore())
+const constructionSiteStore = useConstructionSiteStore()
+const { draftMachine } = storeToRefs(constructionSiteStore)
+const { setDraftMachine } = constructionSiteStore
 
 /**
  * Only handle click / hover for the layer with class name "feature-layer"
@@ -149,5 +151,8 @@ const styleFunction = (feature: RenderFeature, style: Style) => {
 }
 
 function setPosition(event: DrawEvent) {
+  const [x, y] = event.feature.getGeometry()!.getExtent()
+  const position = toLonLat([x, y])
+  setDraftMachine({ position })
 }
 </script>
