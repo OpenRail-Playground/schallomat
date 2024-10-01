@@ -16,10 +16,12 @@
         url="https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf"
         :format="mvtFormat"
       />
-      <ol-style>
-        <ol-style-stroke color="#2255ee" :width="1" />
-      </ol-style>
+      <ol-style :overrideStyleFunction="styleFunction" />
     </ol-vector-tile-layer>
+
+    <ol-tile-layer>
+      <ol-source-tile-debug />
+    </ol-tile-layer>
 
     <ol-vector-layer>
       <ol-source-vector :features="highlightedFeatures" />
@@ -40,6 +42,7 @@ import type MapRef from 'ol/Map'
 import { Layer } from 'ol/layer'
 import RenderFeature from 'ol/render/Feature'
 import type { Coordinate } from 'ol/coordinate'
+import { Fill, Stroke, Style } from 'ol/style'
 
 const props = defineProps<{
   center: Coordinate
@@ -76,5 +79,29 @@ function hoverFeature(event: MapBrowserEvent<PointerEvent>) {
   })
   highlightedFeatures.value = filteredFeatures[0] ? [filteredFeatures[0]] : []
   console.log(highlightedFeatures.value)
+}
+
+const styleFunction = (feature: FeatureLike, style: Style) => {
+  // Check the layer name or other properties
+  const layer = feature.get('layer') // Assuming the layer name is stored in the 'layer' property
+  const kind = feature.get('class') // You may need to adjust this property name based on your data
+
+  // Show only buildings
+  if (layer === 'Building') {
+    const newStyle = style.clone()
+    newStyle.setFill(
+      new Fill({
+        color: 'rgba(255, 165, 0, 0.6)' // Orange fill with some transparency
+      })
+    )
+    newStyle.setStroke(
+      new Stroke({
+        color: '#ff7800', // Orange border
+        width: 1
+      })
+    )
+    return newStyle
+  }
+  return style // Return null for all other features
 }
 </script>

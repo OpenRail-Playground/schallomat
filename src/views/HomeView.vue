@@ -11,7 +11,7 @@ const radius = ref(100)
 <template>
   <section>
     <TheMap :center="center">
-      <CircleComponent :coordinate="center" :radius="radius" />
+      <CircleComponent :center="center" :radius="radius" />
     </TheMap>
     <AddressList :coordinate="center" :radius="radius" />
   </section>

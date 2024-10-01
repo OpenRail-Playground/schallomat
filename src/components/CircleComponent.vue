@@ -1,12 +1,8 @@
 <template>
-  <div class="debug">
-    coordinate: {{ coordinate }}<br />
-    coordinateFromLonLat: {{ coordinateFromLonLat }}
-  </div>
-  <ol-vector-layer>
+  <ol-vector-layer v-if="centerFromLonLat">
     <ol-source-vector>
       <ol-feature>
-        <ol-geom-circle :coordinates="coordinate" :radius="radius" />
+        <ol-geom-circle :center="centerFromLonLat" :radius="radius" />
         <ol-style>
           <ol-style-stroke color="red" :width="3"></ol-style-stroke>
           <ol-style-fill color="rgba(255,200,0,0.2)"></ol-style-fill>
@@ -22,20 +18,11 @@ import { fromLonLat } from 'ol/proj'
 import type { Coordinate } from 'ol/coordinate'
 
 const props = defineProps<{
-  coordinate: Coordinate
+  center: Coordinate
   radius: number
 }>()
 
-const coordinateFromLonLat = computed(() => fromLonLat(props.coordinate))
+const centerFromLonLat = computed(() => fromLonLat(props.center))
 </script>
 
-<style scoped>
-.debug {
-  position: absolute;
-  z-index: 9999;
-  background: white;
-  left: 42px;
-  top: 10px;
-  padding: 3px 0.5rem;
-}
-</style>
+<style scoped></style>
