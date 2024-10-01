@@ -29,12 +29,10 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
       this.isophonesNight = []
       this.isophonesCalculated = false
 
-      const isophones = calculateIsophones(
-        this.machines
-      )
+      const isophones = calculateIsophones(this.machines)
 
-      this.isophonesDay = isophones.day.reverse()
-      this.isophonesNight = isophones.night.reverse()
+      this.isophonesDay = isophones!.day.reverse()
+      this.isophonesNight = isophones!.night.reverse()
 
       this.currentStep = 3
       this.isophonesCalculated = true

@@ -10,29 +10,28 @@ export const IMMISSION_THRESHOLDS: Record<string, number[]> = {
 }
 
 // Funktion zur Berechnung der Isophonen
-export function calculateIsophones(machines: Machine[]): Record<string, number[]> {
+export function calculateIsophones(machines: Machine[]) {
   const dayNoiseLevels: number[] = []
   const nightNoiseLevels: number[] = []
 
   for (const machine of machines) {
-    if (machine.dayHours > 0) {
-      dayNoiseLevels.push(machine.volume + calculateDayBonus(machine.dayHours))
+    if (machine.dayHours ?? 0 > 0) {
+      dayNoiseLevels.push(machine.volume! + calculateDayBonus(machine.dayHours!))
     }
-    if (machine.nightHours > 0) {
-      nightNoiseLevels.push(machine.volume + calculateNightBonus(machine.nightHours))
+    if (machine.nightHours ?? 0 > 0) {
+      nightNoiseLevels.push(machine.volume! + calculateNightBonus(machine.nightHours!))
     }
 
-    const day_radius: number[] = []
-    const night_radius: number[] = []
+    const dayRadii: number[] = []
+    const nightRadii: number[] = []
 
     // Berechnung der Radien basierend auf den Geräuschpegeln
     if (dayNoiseLevels.length !== 0) {
       dayRadii.push(...calculateRadii(sumNoiseLevels(dayNoiseLevels), IMMISSION_THRESHOLDS.day))
     }
     if (nightNoiseLevels.length !== 0) {
-      nightRadii.push(...calculateRadii(
-        sumNoiseLevels(nightNoiseLevels),
-        IMMISSION_THRESHOLDS.night)
+      nightRadii.push(
+        ...calculateRadii(sumNoiseLevels(nightNoiseLevels), IMMISSION_THRESHOLDS.night)
       )
     }
 
@@ -42,7 +41,7 @@ export function calculateIsophones(machines: Machine[]): Record<string, number[]
     }
   }
 
-// Berechnung des Nachtbonus
+  // Berechnung des Nachtbonus
   function calculateNightBonus(duration: number): number {
     if (duration < 2) {
       return -10
@@ -52,7 +51,7 @@ export function calculateIsophones(machines: Machine[]): Record<string, number[]
     return 0
   }
 
-// Berechnung des Tagbonus
+  // Berechnung des Tagbonus
   function calculateDayBonus(duration: number): number {
     if (duration < 2.5) {
       return -10
@@ -62,12 +61,12 @@ export function calculateIsophones(machines: Machine[]): Record<string, number[]
     return 0
   }
 
-// Summe der Geräuschpegel berechnen
+  // Summe der Geräuschpegel berechnen
   function sumNoiseLevels(noiseLevels: number[]): number {
     return 10 * Math.log10(noiseLevels.reduce((sum, level) => sum + 10 ** (level / 10), 0))
   }
 
-// Funktion zur Berechnung der Radien
+  // Funktion zur Berechnung der Radien
   function calculateRadii(
     totalNoiseLevel: number,
     immissionThresholds: number[],
@@ -92,8 +91,12 @@ export function calculateIsophones(machines: Machine[]): Record<string, number[]
     return radii
   }
 
-// Berechnung des Schalldrucks
-  function calculateSoundPressure(noiseLevel: number, distance: number, sourceHeight: number): number {
+  // Berechnung des Schalldrucks
+  function calculateSoundPressure(
+    noiseLevel: number,
+    distance: number,
+    sourceHeight: number
+  ): number {
     const heightDifferenceMinus = sourceHeight - 5.1
     const heightDifferencePlus = sourceHeight + 5.1
     const distanceSquared = distance ** 2
@@ -108,8 +111,19 @@ export function calculateIsophones(machines: Machine[]): Record<string, number[]
     )
   }
 
-// Berechnung der Richtwirkungskorrektur
-  function calculateDirectionalCorrection(distanceSquared: number, heightDifferenceMinus: number, heightDifferencePlus: number) {
-    return 10 * Math.log10(1 + (distanceSquared + heightDifferenceMinus ** 2) / (distanceSquared + heightDifferencePlus ** 2))
+  // Berechnung der Richtwirkungskorrektur
+  function calculateDirectionalCorrection(
+    distanceSquared: number,
+    heightDifferenceMinus: number,
+    heightDifferencePlus: number
+  ) {
+    return (
+      10 *
+      Math.log10(
+        1 +
+          (distanceSquared + heightDifferenceMinus ** 2) /
+            (distanceSquared + heightDifferencePlus ** 2)
+      )
+    )
   }
 }

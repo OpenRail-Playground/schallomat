@@ -1,4 +1,5 @@
-<script setup lang="ts">function setStep(index) {
+<script setup lang="ts">
+function setStep(index: number) {
 
 }
 
