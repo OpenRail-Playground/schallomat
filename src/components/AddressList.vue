@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Addresses within Radius</h2>
+    <h2>Addresses within {{ radius }}m radius</h2>
 
     <div v-if="addressStore.loading">Loading...</div>
     <div v-if="addressStore.error">Error: {{ addressStore.error }}</div>
