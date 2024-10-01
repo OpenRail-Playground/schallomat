@@ -14,6 +14,7 @@ const { calculateIsophones, setStep } = constructionSiteStore
   <ProgressBar :num-steps="3" :current="currentStep" @select="(index) => setStep(index)" />
 
   <h2 v-if="currentStep === 1">Bitte die Position der Baustelle auf der Karte auswählen!</h2>
+  <h3 v-if="currentStep === 2">Bitte die auf der Baustelle verwendeten Maschinen auswählen!</h3>
 
   <MachineConfigurationList v-if="currentStep === 2" />
 
