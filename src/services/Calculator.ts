@@ -6,7 +6,8 @@ const IMMISIONS_RICHTWERTE: Record<string, number[]> = {
   night: [35, 35, 40, 45, 50, 70]
 }
 
-export function calculate(input: [[string, number, number, number]]): [[number]] {
+// Expects Name, Volume, DauerDay, DauerNight
+export function calculate(input: [[string, number, number, number]]): Record<string, number[]> {
   const days: [number] = []
   const nights: [number] = []
 
@@ -16,8 +17,10 @@ export function calculate(input: [[string, number, number, number]]): [[number]]
     nights.push([machine[1] + nightBonus(machine[3])])
   }
 
-  return [calculateRadius(sum_schallleistungen(days), IMMISIONS_RICHTWERTE['day']),
-    calculateRadius(sum_schallleistungen(nights), IMMISIONS_RICHTWERTE['night'])]
+  return {
+    day: calculateRadius(sum_schallleistungen(days), IMMISIONS_RICHTWERTE['day']),
+    night: calculateRadius(sum_schallleistungen(nights), IMMISIONS_RICHTWERTE['night'])
+  }
 }
 
 function nightBonus(dauer: number): number {
@@ -43,7 +46,11 @@ function sum_schallleistungen(schallleistung: number[]): number {
 }
 
 // Function to calculate radius
-function calculateRadius(summenschallleistung: number,  immisions_richtwerte: number[],  hSource: number = 3.0): number[] {
+function calculateRadius(
+  summenschallleistung: number,
+  immisions_richtwerte: number[],
+  hSource: number = 3.0
+): number[] {
   // Define the result dictionary
   const radius: number[] = []
 
