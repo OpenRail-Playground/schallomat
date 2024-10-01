@@ -12,9 +12,12 @@ const currentStep = ref(1)
 <template>
   <ProgressBar :num-steps="3" :current="currentStep" @select="(index) => (currentStep = index)" />
 
-  <MachineConfigurationList />
+  <h2 v-if="currentStep === 1">Bitte die Position der Baustelle auf der Karte auswählen!</h2>
+
+  <MachineConfigurationList v-if="currentStep === 2" />
 
   <button
+    v-if="currentStep === 2"
     class="elm-button calculate"
     data-variant="brand-primary"
     data-width="full"

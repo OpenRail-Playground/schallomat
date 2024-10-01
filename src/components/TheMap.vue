@@ -46,6 +46,7 @@
 
     <CircleComponent
       v-for="(isophone, index) of isophones"
+      :key="index"
       v-if="constructionSiteCenter"
       :center="constructionSiteCenter"
       :radius="isophone"
