@@ -1,7 +1,7 @@
 // Import necessary libraries
 
 // Global constant for immissions thresholds
-export const IMMISIONS_RICHTWERTE: Record<string, number[]> = {
+const IMMISIONS_RICHTWERTE: Record<string, number[]> = {
   day: [45, 50, 55, 60, 65, 70],
   night: [35, 35, 40, 45, 50, 70]
 }
@@ -38,12 +38,12 @@ function dayBonus(dauer: number): number {
   return 0
 }
 
-export function sum_schallleistungen(schallleistung: number[]): number {
+function sum_schallleistungen(schallleistung: number[]): number {
   return 10 * Math.log10(schallleistung.reduce((sum, leistung) => sum + 10 ** (leistung / 10), 0))
 }
 
 // Function to calculate radius
-export function calculateRadius(summenschallleistung: number,  immisions_richtwerte: number[],  hSource: number = 3.0): number[] {
+function calculateRadius(summenschallleistung: number,  immisions_richtwerte: number[],  hSource: number = 3.0): number[] {
   // Define the result dictionary
   const radius: number[] = []
 
@@ -65,7 +65,7 @@ export function calculateRadius(summenschallleistung: number,  immisions_richtwe
   return radius
 }
 
-export function calc_schalldruck(leistung: number, distance: number): number {
+function calc_schalldruck(leistung: number, distance: number): number {
   const noise_height = 3.0
   const h_minus = noise_height - 5.1
   const h_plus = noise_height + 5.1
@@ -81,6 +81,6 @@ export function calc_schalldruck(leistung: number, distance: number): number {
   )
 }
 
-export function richtwirkungskorrektur(distance_squared: number, h_minus: number, h_plus: number) {
+function richtwirkungskorrektur(distance_squared: number, h_minus: number, h_plus: number) {
   return 10 * Math.log10(1 + (distance_squared + h_minus ** 2) / (distance_squared + h_plus ** 2))
 }
