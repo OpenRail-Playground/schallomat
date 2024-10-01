@@ -10,18 +10,39 @@ const radius = ref(100)
 </script>
 
 <template>
-  <section>
-    <TheMap :center="center">
-      <CircleComponent :center="center" :radius="radius" />
-    </TheMap>
-    <AddressList :coordinate="center" :radius="radius" />
-  </section>
-  <MachineWizard />
+  <div class="base-layout">
+    <main>
+      <TheMap :center="center">
+        <CircleComponent :center="center" :radius="radius" />
+      </TheMap>
+    </main>
+    <aside>
+      <MachineWizard />
+    </aside>
+    <footer>
+      <AddressList :coordinate="center" :radius="radius" />
+    </footer>
+  </div>
 </template>
 
 <style scoped>
-section {
-  width: 100%;
-  height: 400px;
+.base-layout {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+footer {
+  grid-area: 2 / 1 / 3 / 3;
+}
+
+aside {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+main {
+  grid-area: 1 / 2 / 2 / 3;
 }
 </style>

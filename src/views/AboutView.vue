@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
+  <main>
     <h2>Schall-O-Mat</h2>
     <p>
       This program calculates which houses (addresses) are affected by the noise of a construction
@@ -12,7 +12,7 @@
       It was created at 3-Länder-Hack, a hackathon of some european railway companies in 2024 in
       Berlin and contributed as Open Source Software.
     </p>
-  </div>
+  </main>
 </template>
 
 <style scoped>

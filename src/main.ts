@@ -8,6 +8,7 @@ import router from './router'
 // The style are only needed for some map controls.
 // However, you can also style them by your own
 import 'vue3-openlayers/styles.css'
+import './styles.scss'
 
 const app = createApp(App)
 
