@@ -1,64 +1,66 @@
 import { defineStore } from 'pinia'
-
-export interface OSMAddress {
-  lat: number
-  lon: number
-  postcode: string
-  city: string
-  street: string
-  housenumber: string
-  levels: number
-}
+import { type Address, fetchAddressInRadius } from '../services/OverpassApi'
 
 export const useAddressStore = defineStore('addressStore', {
   state: () => ({
-    addresses: [] as OSMAddress[],
+    addresses: [] as Address[],
     loading: false,
     error: null as string | null
   }),
 
   actions: {
-    async fetchAddresses(lat: number, lon: number, radius: number) {
-      this.loading = true
-      this.error = null
+    async fetchAddresses(
+      lat: number,
+      lon: number,
+      isophones: {
+        isophonesDay: number[]
+        isophonesNight: number[]
+      }
+    ) {
+      const addressExists = (
+        lat: number,
+        lon: number,
+        isophoneIndexDay?: number,
+        isophoneIndexNight?: number
+      ) => {
+        return this.addresses.some(
+          (entry) =>
+            (entry.lat === lat &&
+              entry.lon === lon &&
+              isophoneIndexDay !== undefined &&
+              entry.isophoneIndexDay === isophoneIndexDay) ||
+            (isophoneIndexNight !== undefined && entry.isophoneIndexNight === isophoneIndexNight)
+        )
+      }
 
-      const overpassUrl = 'https://overpass-api.de/api/interpreter'
-      const query = `
-        [out:json];
-        (
-          node["addr:housenumber"](around:${radius}, ${lat}, ${lon});
-          way["addr:housenumber"](around:${radius}, ${lat}, ${lon});
-          relation["addr:housenumber"](around:${radius}, ${lat}, ${lon});
-        );
-        out center;
-      `
+      const processIsophones = async (
+        lat: number,
+        lon: number,
+        radii: number[],
+        isNight: boolean
+      ) => {
+        for (let i = 0; i < radii.length; i++) {
+          const radius = radii[i]
+          const addressData = await fetchAddressInRadius(lat, lon, radius)
+
+          if (!addressExists(lat, lon, isNight ? undefined : i, isNight ? i : undefined)) {
+            this.addresses.push(
+              ...addressData.map((address) => ({
+                ...address,
+                ...(isNight ? { isophoneIndexNight: i } : { isophoneIndexDay: i })
+              }))
+            )
+          }
+        }
+      }
+
+      const { isophonesDay, isophonesNight } = isophones
+      const isophonesDaySorted = isophonesDay.sort()
+      const isophonesNightSorted = isophonesNight.sort()
 
       try {
-        const response = await fetch(overpassUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: query
-        })
-
-        if (!response.ok) {
-          throw new Error(`Request failed: ${response.status} ${response.statusText}`)
-        }
-
-        const data = await response.json()
-        this.addresses = data.elements.map((element: any) => {
-          const { lat, lon, tags } = element
-          return {
-            lat: lat || element.center.lat,
-            lon: lon || element.center.lon,
-            postcode: tags['addr:postcode'] || '',
-            city: tags['addr:city'] || '',
-            street: tags['addr:street'] || tags['addr:place'] || '',
-            housenumber: tags['addr:housenumber'] || '',
-            levels: Number(tags['building:levels']) || ''
-          }
-        })
+        await processIsophones(lat, lon, isophonesDaySorted, false)
+        await processIsophones(lat, lon, isophonesNightSorted, true)
       } catch (error) {
         this.error = (error as Error).message
         console.error('Error fetching addresses:', error)

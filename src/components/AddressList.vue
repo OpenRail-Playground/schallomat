@@ -26,6 +26,8 @@
         </caption>
         <thead>
           <tr>
+            <th>Isophone (Tag)</th>
+            <th>Isophone (Nacht)</th>
             <th @click="sortBy('city')" :class="getSortClass('city')">City</th>
             <th @click="sortBy('postcode')" :class="getSortClass('postcode')">Postcode</th>
             <th @click="sortBy('street')" :class="getSortClass('street')">Street</th>
@@ -34,7 +36,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(address, index) in filteredAndSortedAddresses" :key="index">
+          <tr v-for="(address, index) in filteredAndSortedAddresses" :key="address.id">
+            <td>{{ address.isophoneIndexDay }}</td>
+            <td>{{ address.isophoneIndexNight }}</td>
             <td>{{ address.city }}</td>
             <td>{{ address.postcode }}</td>
             <td>{{ address.street }}</td>
@@ -79,11 +83,10 @@ watch(
   isophonesCalculated,
   (newValue) => {
     if (newValue && lon.value && lat.value) {
-      addressStore.fetchAddresses(
-        lat.value,
-        lon.value,
-        Math.max(...isophonesDay.value, ...isophonesNight.value)
-      )
+      addressStore.fetchAddresses(lat.value, lon.value, {
+        isophonesDay: isophonesDay.value,
+        isophonesNight: isophonesNight.value
+      })
     }
   },
   { immediate: true }
