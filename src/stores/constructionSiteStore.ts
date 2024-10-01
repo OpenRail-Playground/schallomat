@@ -8,7 +8,7 @@ export interface ConstructionSite {
   machines: Machine[]
 }
 
-export const useConstructionSiteStore = defineStore('addressStore', {
+export const useConstructionSiteStore = defineStore('constructionSiteStore', {
   state: () => ({
     constructionSite: {
       center: [13.3565907, 52.4815294],
