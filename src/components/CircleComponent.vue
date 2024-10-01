@@ -19,9 +19,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { fromLonLat } from 'ol/proj'
+import type { Coordinate } from 'ol/coordinate'
 
 const props = defineProps<{
-  coordinate: number[]
+  coordinate: Coordinate
   radius: number
 }>()
 

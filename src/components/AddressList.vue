@@ -56,12 +56,13 @@
 <script setup lang="ts">
 import { useAddressStore } from '../stores/addressStore'
 import { computed, onMounted, ref, watch } from 'vue'
+import type { Coordinate } from 'ol/coordinate'
 
 type SortKey = 'postcode' | 'street' | 'city'
 type SortDirection = 'asc' | 'desc'
 
 const props = defineProps<{
-  coordinate: number[]
+  coordinate: Coordinate
   radius: number
 }>()
 const addressStore = useAddressStore()

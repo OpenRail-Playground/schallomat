@@ -39,9 +39,10 @@ import { MapBrowserEvent } from 'ol'
 import type MapRef from 'ol/Map'
 import { Layer } from 'ol/layer'
 import RenderFeature from 'ol/render/Feature'
+import type { Coordinate } from 'ol/coordinate'
 
 const props = defineProps<{
-  center: number[]
+  center: Coordinate
 }>()
 const mapRef = ref<{ map: MapRef } | null>(null)
 const viewCenter = ref(fromLonLat(props.center))
