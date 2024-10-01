@@ -4,8 +4,8 @@
       <ol-feature>
         <ol-geom-circle :center="centerFromLonLat" :radius="radius" />
         <ol-style>
-          <ol-style-stroke color="red" :width="3"></ol-style-stroke>
-          <ol-style-fill color="rgba(255,200,0,0.2)"></ol-style-fill>
+          <ol-style-stroke :color="color" :width="3"></ol-style-stroke>
+          <ol-style-fill color="rgba(255,255,0,0.0)"></ol-style-fill>
         </ol-style>
       </ol-feature>
     </ol-source-vector>
@@ -20,6 +20,7 @@ import type { Coordinate } from 'ol/coordinate'
 const props = defineProps<{
   center: Coordinate
   radius: number
+  color: string
 }>()
 
 const centerFromLonLat = computed(() => fromLonLat(props.center))
