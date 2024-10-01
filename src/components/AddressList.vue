@@ -75,15 +75,19 @@ onMounted(() => {
 })
 
 // Watch for changes in the input props and refetch data if they change
-watch(isophonesCalculated, async (newValue) => {
-  if (newValue && lon.value && lat.value) {
-    await addressStore.fetchAddresses(
-      lat.value,
-      lon.value,
-      Math.max(...isophonesDay.value, ...isophonesNight.value)
-    )
-  }
-})
+watch(
+  isophonesCalculated,
+  (newValue) => {
+    if (newValue && lon.value && lat.value) {
+      addressStore.fetchAddresses(
+        lat.value,
+        lon.value,
+        Math.max(...isophonesDay.value, ...isophonesNight.value)
+      )
+    }
+  },
+  { immediate: true }
+)
 
 // Search query for filtering addresses
 const searchQuery = ref('')
