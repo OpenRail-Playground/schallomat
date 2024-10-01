@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import TheMap from '../components/TheMap.vue'
-import AddressList from '../components/AddressList.vue'
 import MachineWizard from '../components/MachineWizard.vue'
-import { storeToRefs } from 'pinia'
-import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 
 const home = ref([13.3565907, 52.4815294])
-const radius = ref(100)
 const isNight = ref(false)
-
-const { center } = storeToRefs(useConstructionSiteStore())
 </script>
 
 <template>
@@ -40,9 +34,6 @@ const { center } = storeToRefs(useConstructionSiteStore())
     <aside>
       <MachineWizard />
     </aside>
-    <footer>
-      <AddressList v-if="center" :coordinate="center" :radius="radius" />
-    </footer>
   </div>
 </template>
 
@@ -54,10 +45,6 @@ const { center } = storeToRefs(useConstructionSiteStore())
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   gap: 1rem;
-}
-
-footer {
-  grid-area: 2 / 1 / 3 / 3;
 }
 
 aside {

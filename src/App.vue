@@ -49,7 +49,7 @@ import logo from './assets/logo.png'
           height=""
         />
       </a>
-      <span class="is-site-name">UI Core</span>
+      <span class="is-site-name">Schall-o-Mat</span>
     </div>
   </header>
 

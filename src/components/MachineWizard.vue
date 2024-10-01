@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import MachineConfigurationList from './MachineConfigurationList.vue'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import ProgressBar from './ProgressBar.vue'
+import { storeToRefs } from 'pinia'
+import AddressList from './AddressList.vue';
+import { ref } from 'vue';
 
-const { calculateIsophones } = useConstructionSiteStore()
+const constructionSiteStore = useConstructionSiteStore()
+const { center, machines, currentStep } = storeToRefs(constructionSiteStore)
+const { calculateIsophones, setStep } = constructionSiteStore
 
-const currentStep = ref(1)
+const radius = ref(100)
 </script>
 
 <template>
-  <ProgressBar :num-steps="3" :current="currentStep" @select="(index) => (currentStep = index)" />
+  <ProgressBar :num-steps="3" :current="currentStep" @select="(index) => setStep(index)" />
 
   <h2 v-if="currentStep === 1">Bitte die Position der Baustelle auf der Karte auswählen!</h2>
 
@@ -18,6 +22,7 @@ const currentStep = ref(1)
 
   <button
     v-if="currentStep === 2"
+    :disabled="machines.length === 0"
     class="elm-button calculate"
     data-variant="brand-primary"
     data-width="full"
@@ -27,6 +32,9 @@ const currentStep = ref(1)
   >
     Berechnen
   </button>
+
+  <AddressList v-if="currentStep === 3 && center" :coordinate="center" :radius="radius" />
+
 </template>
 
 <style lang="css" scoped>

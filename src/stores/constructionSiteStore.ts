@@ -9,7 +9,8 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
     radius: 100,
     machines: [] as Machine[],
     isophonesDay: [] as number[], // radius starting from the center
-    isophonesNight: [] as number[] // radius starting from the center
+    isophonesNight: [] as number[], // radius starting from the center
+    currentStep: 1
   }),
 
   actions: {
@@ -19,6 +20,7 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
 
     setConstructionSiteCenter(coordinate?: Coordinate) {
       this.center = coordinate
+      this.currentStep = 2
     },
 
     calculateIsophones() {
@@ -37,7 +39,13 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
       this.isophonesDay = isophones.day.reverse()
       this.isophonesNight = isophones.night.reverse()
 
+      this.currentStep = 3
+
       console.log('DBG', { isophonesDay: this.isophonesDay, isophonesNight: this.isophonesNight })
+    },
+
+    setStep(step: number) {
+      this.currentStep = step
     }
   }
 })
