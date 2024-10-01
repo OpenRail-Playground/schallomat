@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useConstructionSiteStore } from '../stores/constructionSiteStore'
-import MachineConfigurationList from '@/components/MachineConfigurationList.vue'
-
-const { draftMachine } = storeToRefs(useConstructionSiteStore())
+import MachineConfigurationList from './MachineConfigurationList.vue'
 </script>
 
 <template>

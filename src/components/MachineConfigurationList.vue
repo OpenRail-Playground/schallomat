@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import MachineConfigurationRow from '@/components/MachineConfigurationRow.vue'
+import { storeToRefs } from 'pinia'
+import MachineConfigurationRow from '../components/MachineConfigurationRow.vue'
+import { useConstructionSiteStore } from '../stores/constructionSiteStore'
+
+const constructionSiteStore = useConstructionSiteStore()
+const { machines } = storeToRefs(constructionSiteStore)
+const { addMachine } = constructionSiteStore
 </script>
 
 <template>
@@ -17,7 +23,12 @@ import MachineConfigurationRow from '@/components/MachineConfigurationRow.vue'
       </tr>
     </thead>
     <tbody>
-      <MachineConfigurationRow />
+      <MachineConfigurationRow
+        v-for="(machine, index) in machines"
+        :key="index"
+        :machine="machine"
+      />
+      <MachineConfigurationRow :machine="{ dayHours: 0, nightHours: 0, name: '' }" @add="addMachine" />
     </tbody>
   </table>
 </template>

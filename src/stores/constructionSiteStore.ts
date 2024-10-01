@@ -7,7 +7,6 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
     center: undefined as Coordinate | undefined,
     radius: 100,
     machines: [] as Machine[],
-    draftMachine: undefined as undefined | Machine
   }),
 
   actions: {

@@ -58,8 +58,6 @@ import { Layer } from 'ol/layer'
 import RenderFeature from 'ol/render/Feature'
 import type { Coordinate } from 'ol/coordinate'
 import { Fill, Stroke, Style } from 'ol/style'
-import { useConstructionSiteStore } from '../stores/constructionSiteStore'
-import { storeToRefs } from 'pinia'
 import type { DrawEvent } from 'ol/interaction/Draw'
 
 const markerIcon = new URL(`../assets/db-ic-maps-map-pin-24.png`, import.meta.url).href
