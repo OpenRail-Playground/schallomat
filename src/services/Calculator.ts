@@ -14,13 +14,30 @@ export function calculateIsophones(
 
   for (const machine of input) {
     // what if under 0
-    dayVolumes.push(machine[1] + dayBonus(machine[2]))
-    nightVolumes.push(machine[1] + nightBonus(machine[3]))
+    if (machine[2] != 0) {
+      dayVolumes.push(machine[1] + dayBonus(machine[2]))
+    }
+    if (machine[3] != 0) {
+      nightVolumes.push(machine[1] + nightBonus(machine[3]))
+    }
+  }
+
+  let day_radiums: number[] = []
+  let night_radiums: number[] = []
+
+  if (dayVolumes != 0) {
+    day_radiums = calculateRadius(sum_schallleistungen(dayVolumes), IMMISIONS_RICHTWERTE['day'])
+  }
+  if (nightVolumes != 0) {
+    night_radiums = calculateRadius(
+      sum_schallleistungen(nightVolumes),
+      IMMISIONS_RICHTWERTE['night']
+    )
   }
 
   return {
-    day: calculateRadius(sum_schallleistungen(dayVolumes), IMMISIONS_RICHTWERTE['day']),
-    night: calculateRadius(sum_schallleistungen(nightVolumes), IMMISIONS_RICHTWERTE['night'])
+    day: day_radiums,
+    night: night_radiums
   }
 }
 
