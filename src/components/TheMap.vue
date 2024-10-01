@@ -30,8 +30,18 @@
       </ol-style>
     </ol-vector-layer>
 
-    <ol-vector-layer v-if="!draftMachine?.position">
-      <ol-interaction-draw type="Point" @drawend="setPosition" />
+    <ol-vector-layer>
+      <ol-interaction-draw v-if="!draftMachine?.position" type="Point" @drawend="setPosition" />
+      <ol-source-vector v-if="center">
+        <ol-feature>
+          <ol-geom-point :coordinates="fromLonLat(center)" />
+          <ol-style>
+            <ol-style-stroke color="red" :width="2" />
+            <ol-style-fill color="rgba(255,255,255,0.1)" />
+            <ol-style-icon :src="markerIcon" :scale="0.6" />
+          </ol-style>
+        </ol-feature>
+      </ol-source-vector>
     </ol-vector-layer>
 
     <slot />
@@ -52,6 +62,8 @@ import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
 import type { DrawEvent } from 'ol/interaction/Draw'
 
+const markerIcon = new URL(`../assets/db-ic-maps-map-pin-24.png`, import.meta.url).href
+
 const props = defineProps<{
   center: Coordinate
 }>()
@@ -63,8 +75,8 @@ const mvtFormat = new format.MVT({ featureClass: RenderFeature })
 const highlightedFeatures = ref<FeatureLike[]>([])
 
 const constructionSiteStore = useConstructionSiteStore()
-const { draftMachine } = storeToRefs(constructionSiteStore)
-const { setDraftMachine } = constructionSiteStore
+const { draftMachine, center } = storeToRefs(constructionSiteStore)
+const { setConstructionSiteCenter } = constructionSiteStore
 
 /**
  * Only handle click / hover for the layer with class name "feature-layer"
@@ -153,6 +165,6 @@ const styleFunction = (feature: RenderFeature, style: Style) => {
 function setPosition(event: DrawEvent) {
   const [x, y] = event.feature.getGeometry()!.getExtent()
   const position = toLonLat([x, y])
-  setDraftMachine({ position })
+  setConstructionSiteCenter(position)
 }
 </script>

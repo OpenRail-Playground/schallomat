@@ -4,23 +4,27 @@ import TheMap from '../components/TheMap.vue'
 import AddressList from '../components/AddressList.vue'
 import CircleComponent from '../components/CircleComponent.vue'
 import MachineWizard from '../components/MachineWizard.vue'
+import { storeToRefs } from 'pinia'
+import { useConstructionSiteStore } from '@/stores/constructionSiteStore'
 
-const center = ref([13.3565907, 52.4815294])
+const home = ref([13.3565907, 52.4815294])
 const radius = ref(100)
+
+const { center } = storeToRefs(useConstructionSiteStore())
 </script>
 
 <template>
   <div class="base-layout">
     <main>
-      <TheMap :center="center">
-        <CircleComponent :center="center" :radius="radius" />
+      <TheMap :center="home">
+        <CircleComponent v-if="center" :center="center" :radius="radius" />
       </TheMap>
     </main>
     <aside>
       <MachineWizard />
     </aside>
     <footer>
-      <AddressList :coordinate="center" :radius="radius" />
+      <AddressList v-if="center" :coordinate="center" :radius="radius" />
     </footer>
   </div>
 </template>

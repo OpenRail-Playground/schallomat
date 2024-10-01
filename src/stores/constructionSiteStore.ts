@@ -4,7 +4,7 @@ import type { Coordinate } from 'ol/coordinate'
 
 export const useConstructionSiteStore = defineStore('constructionSiteStore', {
   state: () => ({
-    center: [13.3565907, 52.4815294] as Coordinate,
+    center: undefined as Coordinate | undefined,
     radius: 100,
     machines: [] as Machine[],
     draftMachine: undefined as undefined | Machine
@@ -13,11 +13,10 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
   actions: {
     addMachine(machine: Machine) {
       this.machines.push(machine)
-      this.draftMachine = undefined
     },
 
-    setDraftMachine(machine?: Machine) {
-      this.draftMachine = machine
+    setConstructionSiteCenter(coordinate?: Coordinate) {
+      this.center = coordinate
     }
   }
 })

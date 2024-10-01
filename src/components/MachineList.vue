@@ -6,13 +6,13 @@ import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 const { machines } = storeToRefs(useConstructionMachineStore())
 
 const constructionSiteStore = useConstructionSiteStore()
-const { setDraftMachine } = constructionSiteStore
+const { setConstructionSiteCenter } = constructionSiteStore
 const { draftMachine } = storeToRefs(constructionSiteStore)
 
 function onChange(event: Event) {
   const element = event.target as HTMLSelectElement
   const machine = machines.value.find((machine) => machine.name === element.value)
-  setDraftMachine({ ...machine, ...draftMachine })
+  setConstructionSiteCenter({ ...machine, ...draftMachine })
 }
 </script>
 
