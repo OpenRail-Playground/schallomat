@@ -8,7 +8,7 @@ import logo from './assets/logo.png'
     <nav class="cmp-mainnavigation" id="mainnavigation">
       <input type="checkbox" id="toggle_mainnavigation" />
       <label for="toggle_mainnavigation" title="Toggle main navigation" class="is-site-name"
-        >UI Core</label
+        >Schall-o-Mat</label
       >
       <ul>
         <li>
