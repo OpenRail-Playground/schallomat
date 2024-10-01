@@ -1,6 +1,8 @@
 <template>
-  coordinate: {{ coordinate }}<br />
-  coordinateFromLonLat: {{ coordinateFromLonLat }}
+  <div class="debug">
+    coordinate: {{ coordinate }}<br />
+    coordinateFromLonLat: {{ coordinateFromLonLat }}
+  </div>
   <ol-vector-layer>
     <ol-source-vector>
       <ol-feature>
@@ -27,5 +29,12 @@ const coordinateFromLonLat = computed(() => fromLonLat(props.coordinate))
 </script>
 
 <style scoped>
-/* Add any custom styling here */
+.debug {
+  position: absolute;
+  z-index: 9999;
+  background: white;
+  left: 42px;
+  top: 10px;
+  padding: 3px 0.5rem;
+}
 </style>
