@@ -40,7 +40,7 @@ h1 {
   display: inline-block;
 }
 #logo {
-  width: 70px;
+  width: 100px;
   margin-right: 1rem;
 }
 nav {
