@@ -36,6 +36,8 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
 
       this.isophonesDay = isophones.day.reverse()
       this.isophonesNight = isophones.night.reverse()
+
+      console.log('DBG', { isophonesDay: this.isophonesDay, isophonesNight: this.isophonesNight })
     }
   }
 })
