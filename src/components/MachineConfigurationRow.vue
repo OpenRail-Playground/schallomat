@@ -134,5 +134,17 @@ function validateAndFix(model: 'dayHours' | 'nightHours', max = 24) {
 td {
   text-align: left;
   padding: 0.125rem 0.25rem;
+  position: relative;
+}
+
+select {
+  max-width: 120px;
+}
+
+/* Layout für Desktop */
+@media (min-width: 460px) {
+  select {
+    max-width: unset;
+  }
 }
 </style>

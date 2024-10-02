@@ -27,13 +27,13 @@ button {
   display: inline-flex;
   background: #55b9e6;
   border-radius: 50%;
-  width: 64px;
-  height: 64px;
+  width: 36px;
+  height: 36px;
   margin: 0 0.5rem 0.5rem;
   color: white;
   text-align: center;
   line-height: 0;
-  font-size: 40px;
+  font-size: 20px;
   border: 2px solid black;
   cursor: pointer;
   justify-content: center;
@@ -58,6 +58,12 @@ button.active {
 @media (min-width: 768px) {
   #progress {
     text-align: left;
+  }
+
+  button {
+    width: 64px;
+    height: 64px;
+    font-size: 40px;
   }
 }
 </style>

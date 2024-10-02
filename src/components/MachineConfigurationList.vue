@@ -13,12 +13,18 @@ const { addMachine, updateMachine } = constructionSiteStore
     <thead>
       <tr>
         <th scope="col" data-icon-before="build" data-icon-variant-before="24-outline">Maschine</th>
-        <th scope="col" data-icon-before="day" data-icon-variant-before="24-outline">
-          Durchschn. Betriebs&shy;dauer
-        </th>
-        <th scope="col" data-icon-before="night" data-icon-variant-before="24-outline">
-          Durchschn. Betriebs&shy;dauer
-        </th>
+        <th
+          scope="col"
+          data-icon-before="day"
+          data-icon-variant-before="24-outline"
+          aria-label="Durchschn. Betriebs&shy;dauer Tag"
+        ></th>
+        <th
+          scope="col"
+          data-icon-before="night"
+          data-icon-variant-before="24-outline"
+          aria-label="Durchschn. Betriebs&shy;dauer Nacht"
+        ></th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -27,7 +33,7 @@ const { addMachine, updateMachine } = constructionSiteStore
         v-for="(machine, index) in machines"
         :key="index"
         :machine="machine"
-        @update="machine => updateMachine(index, machine)"
+        @update="(machine) => updateMachine(index, machine)"
       />
       <MachineConfigurationRow
         :machine="{ dayHours: 0, nightHours: 0, name: '' }"
@@ -40,8 +46,12 @@ const { addMachine, updateMachine } = constructionSiteStore
 <style scoped>
 th {
   vertical-align: bottom;
-  text-align: left;
+  text-align: center;
   padding: 0.125rem 0.25rem;
   font-size: 0.875rem;
+}
+
+th:first-of-type {
+  text-align: left;
 }
 </style>

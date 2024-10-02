@@ -14,8 +14,17 @@ const { calculateIsophones, setStep } = constructionSiteStore
   <div class="wrapper">
     <ProgressBar :num-steps="3" :current="currentStep" @select="(index) => setStep(index)" />
 
-    <h2 v-if="currentStep === 1">Bitte die Position der Baustelle auf der Karte auswählen!</h2>
-    <h3 v-if="currentStep === 2">Bitte die auf der Baustelle verwendeten Maschinen auswählen!</h3>
+    <div v-if="currentStep === 1">
+      <h2>Position wählen</h2>
+      <p>Bitte wähle die Position der Baustelle auf der Karte aus!</p>
+    </div>
+    <div v-if="currentStep === 2">
+      <h2>Maschinen wählen</h2>
+      <p v-if="currentStep === 2">
+        Bitte wähle die auf der Baustelle verwendeten Maschinen aus und gib jeweils die
+        durchschnittliche Betriebsdauer für Tag bzw. Nacht (22:00 Uhr - 06:00 Uhr) an.
+      </p>
+    </div>
 
     <MachineConfigurationList v-if="currentStep === 2" />
 

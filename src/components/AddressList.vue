@@ -2,8 +2,12 @@
   <div>
     <div class="wrapper">
       <h2>Ergebnis</h2>
-      <div v-if="addressStore.loading">Loading...</div>
-      <div v-if="addressStore.error">Error: {{ addressStore.error }}</div>
+      <p>
+        Du kannst die Ergebnisse über die Suche bzw. den Filter für die Immissionsrichtwerte nach
+        AVV Baulärm eingrenzen.
+      </p>
+      <div v-if="addressStore.loading">Lade Daten...</div>
+      <div v-if="addressStore.error">Fehler: {{ addressStore.error }}</div>
 
       <div v-if="!addressStore.loading && addressStore.addresses.length">
         <div class="filter">
@@ -80,7 +84,6 @@
           <th @click="sortBy('postcode')" :class="getSortClass('postcode')">PLZ</th>
           <th @click="sortBy('city')" :class="getSortClass('city')">Ort</th>
           <th @click="sortBy('street')" :class="getSortClass('street')">Straße</th>
-          <th class="unsortable small numeric">Etagen</th>
         </tr>
       </thead>
       <tbody>
@@ -116,8 +119,14 @@
           </td>
           <td>{{ address.postcode }}</td>
           <td>{{ address.city }}</td>
-          <td>{{ address.street }} {{ address.housenumber }}</td>
-          <td class="small numeric">{{ address.levels }}</td>
+          <td>
+            {{ address.street }} {{ address.housenumber }}
+            <div v-if="address.levels">
+              <small
+                ><i>Ebenen: {{ address.levels }}</i></small
+              >
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -313,7 +322,6 @@ td.isophone {
   color: white;
 }
 
-th.small,
 td.small {
   max-width: 70px;
 }
@@ -342,5 +350,16 @@ td.small {
 
 .select-classification {
   position: relative;
+}
+
+select {
+  max-width: 200px;
+}
+
+/* Layout für Desktop */
+@media (min-width: 460px) {
+  select {
+    max-width: unset;
+  }
 }
 </style>
