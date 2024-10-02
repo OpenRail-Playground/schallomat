@@ -24,7 +24,7 @@ const active = computed(() => (index: number) => (current === index ? 'active' :
 
 <style lang="css" scoped>
 button {
-  display: inline-block;
+  display: inline-flex;
   background: #55b9e6;
   border-radius: 50%;
   width: 64px;
@@ -36,6 +36,8 @@ button {
   font-size: 40px;
   border: 2px solid black;
   cursor: pointer;
+  justify-content: center;
+  align-items: center;
 }
 
 button:hover {
