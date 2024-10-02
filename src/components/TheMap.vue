@@ -3,7 +3,7 @@
     ref="mapRef"
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 600px; max-width: calc(100vw - 3rem)"
+    style="height: 100%; max-width: calc(100vw - 3rem)"
     @pointermove="hoverFeature"
   >
     <ol-view ref="view" :center="viewCenter" :zoom="zoom" projection="EPSG:3857" />

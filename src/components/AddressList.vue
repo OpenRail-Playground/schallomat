@@ -26,24 +26,21 @@
         </caption>
         <thead>
           <tr>
-            <th>Isophone (Tag)</th>
-            <th>Isophone (Nacht)</th>
+            <th>Isophone<br />day / night</th>
             <th @click="sortBy('city')" :class="getSortClass('city')">City</th>
             <th @click="sortBy('postcode')" :class="getSortClass('postcode')">Postcode</th>
             <th @click="sortBy('street')" :class="getSortClass('street')">Street</th>
-            <th class="unsortable">Housenumber</th>
-            <th class="unsortable">Etagen</th>
+            <th class="unsortable">Levels</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(address, index) in filteredAndSortedAddresses" :key="address.id">
-            <td>{{ address.isophoneIndexDay }}</td>
-            <td>{{ address.isophoneIndexNight }}</td>
+          <tr v-for="address in filteredAndSortedAddresses" :key="address.id">
+            <td class="numeric">{{ address.isophoneIndexDay }}</td>
+            <td class="numeric">{{ address.isophoneIndexNight }}</td>
             <td>{{ address.city }}</td>
             <td>{{ address.postcode }}</td>
-            <td>{{ address.street }}</td>
-            <td>{{ address.housenumber }}</td>
-            <td>{{ address.levels }}</td>
+            <td>{{ address.street }} {{ address.housenumber }}</td>
+            <td class="numeric">{{ address.levels }}</td>
           </tr>
         </tbody>
       </table>
@@ -156,6 +153,10 @@ table {
   border-collapse: collapse;
 }
 
+thead tr {
+  vertical-align: bottom;
+}
+
 th {
   padding: 0.5rem;
   text-align: left;
@@ -189,5 +190,9 @@ th.asc:after {
 
 th.desc:after {
   content: '↓';
+}
+
+.numeric {
+  text-align: right;
 }
 </style>

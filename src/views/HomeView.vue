@@ -19,25 +19,26 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
 <template>
   <div class="base-layout">
     <main>
-      <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label"
-        >Tagzeitraum</label
-      >
-      <input
-        type="checkbox"
-        role="switch"
-        class="elm-toggle"
-        id="day-night-toggle"
-        v-model="time"
-      />
-      <label
-        class="elm-label"
-        for="day-night-toggle"
-        id="night-label"
-        data-icon-before="night"
-        data-icon-variant-before="20-outline"
-        >Nachtzeitraum</label
-      >
-
+      <div>
+        <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label"
+          >Tagzeitraum</label
+        >
+        <input
+          type="checkbox"
+          role="switch"
+          class="elm-toggle"
+          id="day-night-toggle"
+          v-model="time"
+        />
+        <label
+          class="elm-label"
+          for="day-night-toggle"
+          id="night-label"
+          data-icon-before="night"
+          data-icon-variant-before="20-outline"
+          >Nachtzeitraum</label
+        >
+      </div>
       <TheMap :center="home" :time="timeOfDay"></TheMap>
       <TheLegend v-if="currentStep === 3" :time="timeOfDay" />
     </main>
@@ -56,14 +57,22 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
   grid-template-areas:
     'aside'
     'main';
+  height: 100%;
 }
 
 aside {
   grid-area: aside;
+  overflow: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
   grid-area: main;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 #day-label {
