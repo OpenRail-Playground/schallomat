@@ -4,19 +4,23 @@ import { filterAddressesWithinCircle } from '../utils/map'
 
 function getIsophonesWithAddresses(
   addresses: Address[],
-  indexes: number[],
+  isophone: Record<number, number>,
   lon: number,
   lat: number,
-  key: 'isophoneIndexDay' | 'isophoneIndexNight'
+  key: 'isophoneLevelDay' | 'isophoneLevelNight'
 ) {
   const addressMap = new Map<number, Address[]>()
   let restData = [...addresses]
-  indexes.forEach((radius, index) => {
+  const levels = Object.keys(isophone)
+    .map(Number)
+    .sort((a, b) => b - a)
+  levels.forEach((level) => {
+    const radius = isophone[Number(level)]
     const { matches, rest } = filterAddressesWithinCircle(restData, [lon, lat], radius)
     matches.forEach((match) => {
-      match[key] = index
+      match[key] = Number(level)
     })
-    addressMap.set(index, matches)
+    addressMap.set(Number(level), matches)
     restData = rest
   })
   return Array.from(addressMap.values()).flat()
@@ -51,18 +55,18 @@ export const useAddressStore = defineStore('addressStore', {
 
         const dayMapArray = getIsophonesWithAddresses(
           addressesInMaxRadius,
-          dayRadii,
+          isophones.isophonesDay,
           lon,
           lat,
-          'isophoneIndexDay'
+          'isophoneLevelDay'
         )
 
         const nightMapArray = getIsophonesWithAddresses(
           addressesInMaxRadius,
-          nightRadii,
+          isophones.isophonesNight,
           lon,
           lat,
-          'isophoneIndexNight'
+          'isophoneLevelNight'
         )
         console.log({ dayMap: dayMapArray, nightMap: nightMapArray })
 

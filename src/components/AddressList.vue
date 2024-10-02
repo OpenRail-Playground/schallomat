@@ -33,7 +33,11 @@
               v-model="selectedIsophoneFilterIndex"
             >
               <option value="all">Alle</option>
-              <option v-for="(label, index) of isophoneLabel" :value="index" :key="index">
+              <option
+                v-for="(label, index) of isophoneLabels.keys()"
+                :value="isophoneLabels.get(label)"
+                :key="index"
+              >
                 {{ label }}
               </option>
             </select>
@@ -58,15 +62,15 @@
       <thead>
         <tr>
           <th
-            @click="sortBy('isophoneIndexDay')"
-            :class="getSortClass('isophoneIndexDay')"
+            @click="sortBy('isophoneLevelDay')"
+            :class="getSortClass('isophoneLevelDay')"
             class="center"
             data-icon-before="day"
             data-icon-variant-before="24-outline"
           ></th>
           <th
-            @click="sortBy('isophoneIndexNight')"
-            :class="getSortClass('isophoneIndexNight')"
+            @click="sortBy('isophoneLevelNight')"
+            :class="getSortClass('isophoneLevelNight')"
             class="center"
             data-icon-before="night"
             data-icon-variant-before="24-outline"
@@ -79,31 +83,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(address) in filteredAndSortedAddresses" :key="address.id">
+        <tr v-for="address in filteredAndSortedAddresses" :key="address.id">
           <td
             :style="{
               background:
-                address.isophoneIndexDay === undefined
+                address.isophoneLevelDay === undefined
                   ? 'transparent'
-                  : getIsophoneColor(address.isophoneIndexDay, 'day')
+                  : getIsophoneColor(address.isophoneLevelDay, 'day')
             }"
             class="isophone"
           >
-            <span v-if="address.isophoneIndexDay !== undefined"
-              >> {{ getImmissionThresholds().day[address.isophoneIndexDay] }}</span
+            <span v-if="address.isophoneLevelDay !== undefined"
+              >> {{ address.isophoneLevelDay }}</span
             >
           </td>
           <td
             :style="{
               background:
-                address.isophoneIndexNight === undefined
+                address.isophoneLevelNight === undefined
                   ? 'transparent'
-                  : getIsophoneColor(address.isophoneIndexNight, 'night')
+                  : getIsophoneColor(address.isophoneLevelNight, 'night')
             }"
             class="isophone"
           >
-            <span v-if="address.isophoneIndexNight !== undefined"
-              >> {{ getImmissionThresholds().day[address.isophoneIndexNight] }}</span
+            <span v-if="address.isophoneLevelNight !== undefined"
+              >> {{ address.isophoneLevelNight }}</span
             >
           </td>
           <td>{{ address.city }}</td>
@@ -140,9 +144,9 @@ import { useAddressStore } from '../stores/addressStore'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
-import { getImmissionThresholds, getIsophoneColor, isophoneLabel } from '../services/Isophones'
+import { getIsophoneColor, isophoneLabels } from '../services/Isophones'
 
-type SortKey = 'postcode' | 'street' | 'city' | 'isophoneIndexDay' | 'isophoneIndexNight'
+type SortKey = 'postcode' | 'street' | 'city' | 'isophoneLevelDay' | 'isophoneLevelNight'
 type SortDirection = 'asc' | 'desc'
 
 const addressStore = useAddressStore()
@@ -154,7 +158,7 @@ const { center, isophonesCalculated, isophonesDay, isophonesNight } =
 const lon = computed(() => center.value && center.value[0])
 const lat = computed(() => center.value && center.value[1])
 
-const selectedIsophoneFilterIndex = ref<number | 'all'>('all')
+const selectedIsophoneFilterIndex = ref<{ day: number; night: number } | 'all'>('all')
 
 // Fetch addresses when the component is mounted
 onMounted(() => {
@@ -208,8 +212,8 @@ const filteredAndSortedAddresses = computed(() => {
         }
 
         return (
-          address.isophoneIndexDay === selectedIsophoneFilterIndex.value ||
-          address.isophoneIndexNight === selectedIsophoneFilterIndex.value
+          address.isophoneLevelDay === selectedIsophoneFilterIndex.value.day ||
+          address.isophoneLevelNight === selectedIsophoneFilterIndex.value.night
         )
       })
       // filter by test input

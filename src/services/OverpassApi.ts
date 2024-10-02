@@ -7,8 +7,8 @@ export interface Address {
   street: string
   housenumber: string
   levels: number
-  isophoneIndexDay?: number
-  isophoneIndexNight?: number
+  isophoneLevelDay?: number
+  isophoneLevelNight?: number
 }
 
 export async function fetchAddressInRadius(

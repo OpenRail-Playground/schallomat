@@ -20,14 +20,14 @@ export const isophoneLevels: Record<TimeOfDay, Record<number, string>> = {
   }
 }
 
-export const isophoneLabel = [
-  'Sondergebiet/ Kurgebiet (SO)',
-  'Reines Wohngebiet (WR)',
-  'Allgemeines Wohngebiet (WA)',
-  'Mischgebiet (MI)',
-  'Gewerbegebiet (GE)',
-  'Industriegebiet (GI)'
-]
+export const isophoneLabels = new Map<string, { day: number; night: number }>([
+  ['Industriegebiet (GI)', { day: 70, night: 70 }],
+  ['Gewerbegebiet (GE)', { day: 65, night: 50 }],
+  ['Mischgebiet (MI)', { day: 60, night: 45 }],
+  ['Allgemeines Wohngebiet (WA)', { day: 55, night: 40 }],
+  ['Reines Wohngebiet (WR)', { day: 50, night: 35 }],
+  ['Sondergebiet/ Kurgebiet (SO)', { day: 45, night: 35 }]
+])
 
 export function getImmissionThresholds() {
   return {
