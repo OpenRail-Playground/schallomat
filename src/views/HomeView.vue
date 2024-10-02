@@ -57,7 +57,7 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
   grid-template-areas:
     'aside'
     'main';
-  height: 100%;
+  height: calc(100% - 70px);
 }
 
 aside {

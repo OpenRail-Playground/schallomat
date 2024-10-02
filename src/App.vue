@@ -102,15 +102,19 @@ onMounted(() => setTimeout(() => (splash.value = false), 2000))
   justify-content: center;
   height: 100vh;
 }
+
 .splash img {
   width: 300px;
-  animation: noise 0.1s infinite, fadeIn 1s forwards;
+  animation:
+    noise 0.1s infinite,
+    fadeIn 1s forwards;
 }
 
-header {
+header.rea-header {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 0;
 }
 
 nav {
