@@ -57,12 +57,14 @@
             <th
               @click="sortBy('isophoneIndexDay')"
               :class="getSortClass('isophoneIndexDay')"
+              class="center"
               data-icon-before="day"
               data-icon-variant-before="24-outline"
             ></th>
             <th
               @click="sortBy('isophoneIndexNight')"
               :class="getSortClass('isophoneIndexNight')"
+              class="center"
               data-icon-before="night"
               data-icon-variant-before="24-outline"
             ></th>
@@ -289,6 +291,10 @@ td.small {
 
 .numeric {
   text-align: right;
+}
+
+.center {
+  text-align: center;
 }
 
 .filter {
