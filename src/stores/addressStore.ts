@@ -34,21 +34,24 @@ export const useAddressStore = defineStore('addressStore', {
       lat: number,
       lon: number,
       isophones: {
-        isophonesDay: number[]
-        isophonesNight: number[]
+        isophonesDay: Record<number, number>
+        isophonesNight: Record<number, number>
       }
     ) {
-      const maxRadius = Math.max(...isophones.isophonesDay, ...isophones.isophonesNight)
-      const { isophonesDay, isophonesNight } = isophones
-      const isophonesDaySorted = isophonesDay.sort((a, b) => a - b)
-      const isophonesNightSorted = isophonesNight.sort((a, b) => a - b)
+      const dayRadii = Object.values(isophones.isophonesDay)
+        .map(Number)
+        .sort((a, b) => a - b)
+      const nightRadii = Object.values(isophones.isophonesNight)
+        .map(Number)
+        .sort((a, b) => a - b)
+      const maxRadius = Math.max(...dayRadii, ...nightRadii)
 
       try {
         const addressesInMaxRadius = await fetchAddressInRadius(lat, lon, maxRadius)
 
         const dayMapArray = getIsophonesWithAddresses(
           addressesInMaxRadius,
-          isophonesDaySorted,
+          dayRadii,
           lon,
           lat,
           'isophoneIndexDay'
@@ -56,7 +59,7 @@ export const useAddressStore = defineStore('addressStore', {
 
         const nightMapArray = getIsophonesWithAddresses(
           addressesInMaxRadius,
-          isophonesNightSorted,
+          nightRadii,
           lon,
           lat,
           'isophoneIndexNight'

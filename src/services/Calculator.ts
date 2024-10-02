@@ -15,24 +15,22 @@ export function calculateIsophones(machines: Machine[]) {
     if (machine.nightHours ?? 0 > 0) {
       nightNoiseLevels.push(machine.volume! + calculateNightBonus(machine.nightHours!))
     }
+  }
 
-    const dayRadii: number[] = []
-    const nightRadii: number[] = []
+  let dayRadii: Record<number, number> = {}
+  let nightRadii: Record<number, number> = {}
 
-    // Berechnung der Radien basierend auf den Geräuschpegeln
-    if (dayNoiseLevels.length !== 0) {
-      dayRadii.push(...calculateRadii(sumNoiseLevels(dayNoiseLevels), IMMISSION_THRESHOLDS.day))
-    }
-    if (nightNoiseLevels.length !== 0) {
-      nightRadii.push(
-        ...calculateRadii(sumNoiseLevels(nightNoiseLevels), IMMISSION_THRESHOLDS.night)
-      )
-    }
+  // Berechnung der Radien basierend auf den Geräuschpegeln
+  if (dayNoiseLevels.length !== 0) {
+    dayRadii = calculateRadii(sumNoiseLevels(dayNoiseLevels), IMMISSION_THRESHOLDS.day)
+  }
+  if (nightNoiseLevels.length !== 0) {
+    nightRadii = calculateRadii(sumNoiseLevels(nightNoiseLevels), IMMISSION_THRESHOLDS.night)
+  }
 
-    return {
-      day: dayRadii,
-      night: nightRadii
-    }
+  return {
+    day: dayRadii,
+    night: nightRadii
   }
 
   // Berechnung des Nachtbonus
@@ -65,15 +63,15 @@ export function calculateIsophones(machines: Machine[]) {
     totalNoiseLevel: number,
     immissionThresholds: number[],
     sourceHeight = 3.0
-  ): number[] {
-    const radii: number[] = []
+  ) {
+    const radii: Record<number, number> = {}
 
     for (let distance = 5; distance <= 100000; distance += 5) {
       const soundPressure = calculateSoundPressure(totalNoiseLevel, distance, sourceHeight)
 
       for (let i = 0; i < immissionThresholds.length; i++) {
         if (soundPressure >= immissionThresholds[i]) {
-          radii[i] = distance
+          radii[immissionThresholds[i]] = distance
         }
       }
 

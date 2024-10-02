@@ -8,8 +8,8 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
     center: undefined as Coordinate | undefined,
     radius: 100,
     machines: [] as Machine[],
-    isophonesDay: [] as number[], // radius starting from the center
-    isophonesNight: [] as number[], // radius starting from the center
+    isophonesDay: {} as Record<number, number>, // radius indexed by dB
+    isophonesNight: {} as Record<number, number>, // radius indexed by dB
     currentStep: 1,
     isophonesCalculated: false as boolean
   }),
@@ -25,14 +25,14 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
     },
 
     calculateIsophones() {
-      this.isophonesDay = []
-      this.isophonesNight = []
+      this.isophonesDay = {}
+      this.isophonesNight = {}
       this.isophonesCalculated = false
 
       const isophones = calculateIsophones(this.machines)
 
-      this.isophonesDay = isophones!.day?.sort((a, b) => b - a)
-      this.isophonesNight = isophones!.night?.sort((a, b) => b - a)
+      this.isophonesDay = isophones!.day
+      this.isophonesNight = isophones!.night
 
       this.currentStep = 3
       this.isophonesCalculated = true

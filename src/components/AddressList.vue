@@ -76,7 +76,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(address, index) in filteredAndSortedAddresses" :key="address.id">
+          <tr v-for="(address) in filteredAndSortedAddresses" :key="address.id">
             <td
               :style="{
                 background:

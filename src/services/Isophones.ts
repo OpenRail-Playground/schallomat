@@ -4,19 +4,19 @@ export type TimeOfDay = 'day' | 'night'
 // MUSS ZWINGEND in aufsteigender Ordnung sein.
 export const isophoneLevels: Record<TimeOfDay, Record<number, string>> = {
   day: {
-    45: '#66aa22',
-    50: '#00694c',
-    55: '#f1d90b',
-    60: '#996a29',
+    70: '#cb2e34',
     65: '#ee7821',
-    70: '#cb2e34'
+    60: '#996a29',
+    55: '#f1d90b',
+    50: '#00694c',
+    45: '#66aa22',
   },
   night: {
-    35: '#66aa22',
-    40: '#ee7821',
-    45: '#cb2e34',
+    70: '#824c7c',
     50: '#891d20',
-    70: '#824c7c'
+    45: '#cb2e34',
+    40: '#ee7821',
+    35: '#66aa22',
   }
 }
 
@@ -36,6 +36,6 @@ export function getImmissionThresholds() {
   }
 }
 
-export function getIsophoneColor(index: number, time: TimeOfDay) {
-  return Object.values(isophoneLevels[time])[index]
+export function getIsophoneColor(isophone: number, time: TimeOfDay) {
+  return isophoneLevels[time][Number(isophone)]
 }

@@ -51,7 +51,7 @@
         :center="constructionSiteCenter"
         :radius="isophone"
         :track="isophone"
-        :color="getIsophoneColor(Number(index), time)"
+        :color="getIsophoneColor(index, time)"
       />
     </div>
 
