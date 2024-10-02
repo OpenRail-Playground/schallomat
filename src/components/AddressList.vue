@@ -75,10 +75,9 @@
             data-icon-before="night"
             data-icon-variant-before="24-outline"
           ></th>
-          <th @click="sortBy('city')" :class="getSortClass('city')">Ort</th>
           <th @click="sortBy('postcode')" :class="getSortClass('postcode')">PLZ</th>
+          <th @click="sortBy('city')" :class="getSortClass('city')">Ort</th>
           <th @click="sortBy('street')" :class="getSortClass('street')">Straße</th>
-          <th class="unsortable small">Nr.</th>
           <th class="unsortable small numeric">Etagen</th>
         </tr>
       </thead>
@@ -113,10 +112,9 @@
               >> {{ address.isophoneLevelNight }}</span
             >
           </td>
-          <td>{{ address.city }}</td>
           <td>{{ address.postcode }}</td>
-          <td>{{ address.street }}</td>
-          <td class="small">{{ address.housenumber }}</td>
+          <td>{{ address.city }}</td>
+          <td>{{ address.street }} {{ address.housenumber }}</td>
           <td class="small numeric">{{ address.levels }}</td>
         </tr>
       </tbody>
