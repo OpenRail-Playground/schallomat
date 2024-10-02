@@ -26,18 +26,16 @@
         </caption>
         <thead>
           <tr>
-            <th>Isophone<br />day / night</th>
-            <th @click="sortBy('city')" :class="getSortClass('city')">City</th>
-            <th @click="sortBy('postcode')" :class="getSortClass('postcode')">Postcode</th>
-            <th @click="sortBy('street')" :class="getSortClass('street')">Street</th>
-            <th class="unsortable">Levels</th>
+            <th>Isophone<br />Tag/Nacht</th>
+            <th @click="sortBy('city')" :class="getSortClass('city')">Stadt</th>
+            <th @click="sortBy('street')" :class="getSortClass('street')">Adresse</th>
+            <th class="unsortable">Etagen</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="address in filteredAndSortedAddresses" :key="address.id">
             <td>{{ address.isophoneIndexDay }} / {{ address.isophoneIndexNight }}</td>
-            <td>{{ address.city }}</td>
-            <td>{{ address.postcode }}</td>
+            <td>{{ address.postcode }} {{ address.city }}</td>
             <td>{{ address.street }} {{ address.housenumber }}</td>
             <td class="numeric">{{ address.levels }}</td>
           </tr>
