@@ -19,7 +19,7 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
 <template>
   <div class="base-layout">
     <main>
-      <div class="day-night">
+      <div v-if="currentStep === 3">
         <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label"
           >Tagzeitraum</label
         >
