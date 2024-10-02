@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { Machine } from './constructionMachineStore'
 import type { Coordinate } from 'ol/coordinate'
 import { calculateIsophones } from '../services/Calculator'
+import type { Ref } from 'vue'
 
 export const useConstructionSiteStore = defineStore('constructionSiteStore', {
   state: () => ({
@@ -17,6 +18,10 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
   actions: {
     addMachine(machine: Machine) {
       this.machines.push(machine)
+    },
+
+    updateMachine(index: number, machine: Ref<Machine>) {
+      this.machines = this.machines.map((m, i) => (i === index ? machine.value : m))
     },
 
     setConstructionSiteCenter(coordinate?: Coordinate) {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { type Machine, useConstructionMachineStore } from '../stores/constructionMachineStore'
 import { storeToRefs } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{ machine: Machine }>()
-const emit = defineEmits(['add'])
+const emit = defineEmits(['add', 'update'])
 
 const { machines } = storeToRefs(useConstructionMachineStore())
 
@@ -24,6 +24,10 @@ function addMachine() {
 
   emit('add', machine)
   machineConfig.value = { dayHours: 0, nightHours: 0, name: '' }
+}
+
+if (props.machine.name !== '') {
+  watch(machineConfig, () => emit('update', machineConfig), { deep: true })
 }
 
 function validateAndFix(model: 'dayHours' | 'nightHours', max = 24) {

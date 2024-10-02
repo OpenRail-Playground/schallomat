@@ -5,7 +5,7 @@ import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 
 const constructionSiteStore = useConstructionSiteStore()
 const { machines } = storeToRefs(constructionSiteStore)
-const { addMachine } = constructionSiteStore
+const { addMachine, updateMachine } = constructionSiteStore
 </script>
 
 <template>
@@ -27,6 +27,7 @@ const { addMachine } = constructionSiteStore
         v-for="(machine, index) in machines"
         :key="index"
         :machine="machine"
+        @update="machine => updateMachine(index, machine)"
       />
       <MachineConfigurationRow
         :machine="{ dayHours: 0, nightHours: 0, name: '' }"
