@@ -60,7 +60,7 @@ onMounted(() => setTimeout(() => (splash.value = false), 2000))
 
   <RouterView v-if="!splash" />
 
-  <div class="splash" v-if="splash">
+  <div class="splash" v-if="splash" @click="splash = false">
     <img :src="logo" />
   </div>
 </template>

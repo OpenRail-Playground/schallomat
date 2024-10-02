@@ -36,6 +36,6 @@ export function getImmissionThresholds() {
   }
 }
 
-export function getIsophoneColor(isophone: number, time: TimeOfDay) {
-  return isophoneLevels[time][Number(isophone)]
+export function getIsophoneColor(level: number, time: TimeOfDay) {
+  return isophoneLevels[time][Number(level)]
 }
