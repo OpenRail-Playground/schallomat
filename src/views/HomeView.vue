@@ -19,7 +19,7 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
 <template>
   <div class="base-layout">
     <main>
-      <div>
+      <div class="day-night">
         <label data-icon-before="day" data-icon-variant-before="20-outline" id="day-label"
           >Tagzeitraum</label
         >
@@ -54,6 +54,7 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   gap: 1rem;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
     'aside'
     'main';
@@ -75,6 +76,10 @@ main {
   flex-direction: column;
 }
 
+.day-night {
+  margin: 0.5rem 1rem;
+}
+
 #day-label {
   position: relative;
   top: -0.3rem;
@@ -91,6 +96,7 @@ main {
   .base-layout {
     grid-template-columns: minmax(min-content, 50vw) 1fr;
     grid-template-areas: 'aside main';
+    grid-template-rows: 1fr;
   }
 }
 </style>

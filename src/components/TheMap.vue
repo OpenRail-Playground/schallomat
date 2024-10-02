@@ -3,7 +3,7 @@
     ref="mapRef"
     :loadTilesWhileAnimating="true"
     :loadTilesWhileInteracting="true"
-    style="height: 100%; max-width: calc(100vw - 3rem)"
+    style="height: 100%"
     @pointermove="hoverFeature"
   >
     <ol-view ref="view" :center="viewCenter" :zoom="zoom" projection="EPSG:3857" />
@@ -187,3 +187,16 @@ function setPosition(event: DrawEvent) {
   setConstructionSiteCenter(position)
 }
 </script>
+
+<style scoped>
+.ol-map {
+  max-width: 100vw;
+}
+
+/* Layout für Desktop */
+@media (min-width: 768px) {
+  .ol-map {
+    max-width: calc(100vw - 3rem);
+  }
+}
+</style>

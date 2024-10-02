@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 const { numSteps, current } = defineProps<{ numSteps: number; current: number }>()
-const emit = defineEmits(["select"])
+const emit = defineEmits(['select'])
 
 const steps = computed(() => Array.from({ length: numSteps }, (_, i) => i + 1))
 
@@ -11,7 +11,14 @@ const active = computed(() => (index: number) => (current === index ? 'active' :
 
 <template>
   <div id="progress">
-    <button v-for="index in steps" :key="index" :class="active(index)" @click="emit('select', index)">{{ index }}</button>
+    <button
+      v-for="index in steps"
+      :key="index"
+      :class="active(index)"
+      @click="emit('select', index)"
+    >
+      {{ index }}
+    </button>
   </div>
 </template>
 
@@ -39,5 +46,16 @@ button.active {
   background: #115270;
   border-color: #115270;
   cursor: not-allowed;
+}
+
+#progress {
+  text-align: center;
+}
+
+/* Layout für Desktop */
+@media (min-width: 768px) {
+  #progress {
+    text-align: left;
+  }
 }
 </style>

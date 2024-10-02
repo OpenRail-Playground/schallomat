@@ -44,4 +44,8 @@ const { calculateIsophones, setStep } = constructionSiteStore
 .wrapper {
   padding: 0 1rem;
 }
+
+h2 {
+  margin-bottom: 0;
+}
 </style>

@@ -83,7 +83,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="address in filteredAndSortedAddresses" :key="address.id">
+        <tr
+          v-for="address in filteredAndSortedAddresses"
+          :key="address.id + address.lat + address.lon"
+        >
           <td
             :style="{
               background:
@@ -203,41 +206,43 @@ function sortBy(key: SortKey) {
 
 // Filter and sort addresses based on the search query and selected sort column
 const filteredAndSortedAddresses = computed(() => {
-  return (
-    [...addressStore.addresses]
-      // filter by category
-      .filter((address) => {
-        if (selectedIsophoneFilterIndex.value === 'all') {
-          return true
-        }
+  const filteredAndSortedResult = [...addressStore.addresses]
+    // filter by category
+    .filter((address) => {
+      if (selectedIsophoneFilterIndex.value === 'all') {
+        return true
+      }
 
-        return (
-          address.isophoneLevelDay === selectedIsophoneFilterIndex.value.day ||
-          address.isophoneLevelNight === selectedIsophoneFilterIndex.value.night
-        )
-      })
-      // filter by test input
-      .filter((address) => {
-        const searchLower = searchQuery.value.toLowerCase()
-        return (
-          [address.street, address.housenumber, address.postcode, address.city]
-            .join(' ')
-            .toLowerCase()
-            .includes(searchLower) ||
-          address.postcode?.toString().includes(searchLower) ||
-          address.street?.toLowerCase().includes(searchLower) ||
-          address.city?.toLowerCase().includes(searchLower)
-        )
-      })
-      .sort((a, b) => {
-        const aValue = a[sortKey.value] || ''
-        const bValue = b[sortKey.value] || ''
+      return (
+        address.isophoneLevelDay === selectedIsophoneFilterIndex.value.day ||
+        address.isophoneLevelNight === selectedIsophoneFilterIndex.value.night
+      )
+    })
+  // filter by test input
+  /*.filter((address) => {
+    const searchLower = searchQuery.value.toLowerCase()
+    return (
+      [address.street, address.housenumber, address.postcode, address.city]
+        .join(' ')
+        .toLowerCase()
+        .includes(searchLower) ||
+      address.postcode?.toString().includes(searchLower) ||
+      address.street?.toLowerCase().includes(searchLower) ||
+      address.city?.toLowerCase().includes(searchLower)
+    )
+  })
+  .sort((a, b) => {
+    const aValue = a[sortKey.value] || ''
+    const bValue = b[sortKey.value] || ''
 
-        if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
-        if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
-        return 0
-      })
-  )
+    if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
+    if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
+    return 0
+  })
+)*/
+
+  console.log(filteredAndSortedResult)
+  return filteredAndSortedResult
 })
 
 function informPeople() {
