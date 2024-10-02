@@ -41,7 +41,9 @@
                 {{ label }}
               </option>
             </select>
-            <label class="elm-label" for="isophone-classification">Einstufung</label>
+            <label class="elm-label" for="isophone-classification"
+              >Einstufung (Tag oder Nacht)</label
+            >
           </div>
         </div>
       </div>
