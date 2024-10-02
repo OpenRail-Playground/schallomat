@@ -54,7 +54,7 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   gap: 1rem;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 3fr 2fr;
   grid-template-areas:
     'aside'
     'main';
