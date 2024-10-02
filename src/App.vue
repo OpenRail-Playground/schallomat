@@ -131,4 +131,12 @@ nav > a {
   position: relative;
   top: -20px;
 }
+
+/* Layout für Desktop */
+@media (max-width: 1023px) {
+  #app .cmp-brand img {
+    transform: scale(0.8);
+    left: -1rem;
+  }
+}
 </style>
