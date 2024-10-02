@@ -5,7 +5,18 @@ import { onMounted, ref } from 'vue'
 
 const splash = ref(true)
 
-onMounted(() => setTimeout(() => (splash.value = false), 2000))
+navigator.vibrate(2000)
+onMounted(() =>
+  setTimeout(() => {
+    splash.value = false
+    navigator.vibrate(0)
+  }, 2000)
+)
+
+function stopSplashscreen() {
+  splash.value = false
+  navigator.vibrate(0)
+}
 </script>
 
 <template>
@@ -60,7 +71,7 @@ onMounted(() => setTimeout(() => (splash.value = false), 2000))
 
   <RouterView v-if="!splash" />
 
-  <div class="splash" v-if="splash" @click="splash = false">
+  <div class="splash" v-if="splash" @click="stopSplashscreen">
     <img :src="logo" />
   </div>
 </template>
