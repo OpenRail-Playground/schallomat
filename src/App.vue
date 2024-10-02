@@ -5,11 +5,22 @@ import { onMounted, ref } from 'vue'
 
 const splash = ref(true)
 
-navigator.vibrate(2000)
+let vibrateSupported = false
+
+if ('vibrate' in Navigator) {
+  vibrateSupported = true
+}
+
+if (vibrateSupported) {
+  navigator.vibrate(2000)
+}
+
 onMounted(() =>
   setTimeout(() => {
     splash.value = false
-    navigator.vibrate(0)
+    if (vibrateSupported) {
+      navigator.vibrate(0)
+    }
   }, 2000)
 )
 
