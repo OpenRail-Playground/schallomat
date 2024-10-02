@@ -184,7 +184,7 @@ function sortBy(key: SortKey) {
 // Filter and sort addresses based on the search query and selected sort column
 const filteredAndSortedAddresses = computed(() => {
   return (
-    addressStore.addresses
+    [...addressStore.addresses]
       // filter by category
       .filter((address) => {
         if (selectedIsophoneFilterIndex.value === 'all') {
