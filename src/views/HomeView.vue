@@ -50,19 +50,20 @@ const timeOfDay = computed<TimeOfDay>(() => (time.value ? 'night' : 'day'))
 <style scoped>
 .base-layout {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   gap: 1rem;
+  grid-template-areas:
+    'aside'
+    'main';
 }
 
 aside {
-  grid-area: 1 / 1 / 2 / 2;
+  grid-area: aside;
 }
 
 main {
-  grid-area: 1 / 2 / 2 / 3;
+  grid-area: main;
 }
 
 #day-label {
@@ -74,5 +75,13 @@ main {
 
 #night-label {
   margin-left: 0.5rem;
+}
+
+/* Layout für Desktop */
+@media (min-width: 768px) {
+  .base-layout {
+    grid-template-columns: minmax(min-content, 50vw) 1fr;
+    grid-template-areas: 'aside main';
+  }
 }
 </style>

@@ -31,8 +31,8 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
 
       const isophones = calculateIsophones(this.machines)
 
-      this.isophonesDay = isophones!.day
-      this.isophonesNight = isophones!.night
+      this.isophonesDay = isophones!.day?.sort((a, b) => b - a)
+      this.isophonesNight = isophones!.night?.sort((a, b) => b - a)
 
       this.currentStep = 3
       this.isophonesCalculated = true

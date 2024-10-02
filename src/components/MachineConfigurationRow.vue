@@ -25,12 +25,30 @@ function addMachine() {
   emit('add', machine)
   machineConfig.value = { dayHours: 0, nightHours: 0, name: '' }
 }
+
+function validateAndFix(model: 'dayHours' | 'nightHours', max = 24) {
+  const currentValue = machineConfig.value[model] as string | number | undefined
+  if (currentValue === undefined || currentValue === '' || Number(currentValue) < 0) {
+    machineConfig.value[model] = 0
+    return
+  }
+
+  if (Number(currentValue) > max) {
+    machineConfig.value[model] = max
+  }
+}
 </script>
 
 <template>
   <tr class="machine-config">
     <td>
-      <select class="elm-select" name="machine" id="machine" v-model="machineConfig.name">
+      <select
+        class="elm-select"
+        name="machine"
+        id="machine"
+        v-model="machineConfig.name"
+        data-variant="outline"
+      >
         <option></option>
         <option v-for="(machine, index) in machines" :key="index" :value="machine.name">
           {{ machine.name }}
@@ -51,7 +69,9 @@ function addMachine() {
         id="avg-operating-time-day"
         value=""
         aria-labelledby="avg-operating-time-day-label"
-        v-model="machineConfig.dayHours"
+        data-variant="outline"
+        v-model.number="machineConfig.dayHours"
+        @input="validateAndFix('dayHours', 16)"
       />
       <label
         class="elm-label"
@@ -59,7 +79,7 @@ function addMachine() {
         id="avg-operating-time-day-label"
         for="avg-operating-time-day"
       >
-        Dauer (h) / Tag
+        Std.
       </label>
     </td>
 
@@ -75,7 +95,9 @@ function addMachine() {
         id="avg-operating-time-night"
         value=""
         aria-labelledby="avg-operating-time-night-label"
-        v-model="machineConfig.nightHours"
+        data-variant="outline"
+        v-model.number="machineConfig.nightHours"
+        @input="validateAndFix('nightHours', 8)"
       />
       <label
         class="elm-label"
@@ -83,7 +105,7 @@ function addMachine() {
         id="avg-operating-time-night-label"
         for="avg-operating-time-night"
       >
-        Dauer (h) / Nacht
+        Std.
       </label>
     </td>
 
@@ -91,8 +113,9 @@ function addMachine() {
       <button
         v-if="props.machine.name === ''"
         :disabled="isDisabled"
-        class="elm-button"
+        class="elm-button is-icon-text-replace"
         data-variant="secondary-outline"
+        data-icon="add"
         title="Hinzufügen"
         type="button"
         @click="addMachine"

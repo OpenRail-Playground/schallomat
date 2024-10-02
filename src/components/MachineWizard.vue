@@ -36,6 +36,6 @@ const { calculateIsophones, setStep } = constructionSiteStore
 
 <style lang="css" scoped>
 .calculate {
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 </style>
