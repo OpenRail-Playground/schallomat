@@ -1,121 +1,137 @@
 <template>
   <div>
-    <h2>Ergebnis</h2>
-    <div v-if="addressStore.loading">Loading...</div>
-    <div v-if="addressStore.error">Error: {{ addressStore.error }}</div>
+    <div class="wrapper">
+      <h2>Ergebnis</h2>
+      <div v-if="addressStore.loading">Loading...</div>
+      <div v-if="addressStore.error">Error: {{ addressStore.error }}</div>
 
-    <div v-if="!addressStore.loading && addressStore.addresses.length">
-      <div class="filter">
-        <!-- Search input -->
+      <div v-if="!addressStore.loading && addressStore.addresses.length">
+        <div class="filter">
+          <!-- Search input -->
 
-        <div class="search-input">
-          <input
-            v-model="searchQuery"
-            type="text"
-            class="elm-input"
-            placeholder="Suche"
-            name="search"
-            id="search"
-            aria-labelledby="search-label"
-            data-variant="outline"
-          />
-          <label class="elm-label" for="search" aria-hidden="true" id="search-label">Suche</label>
-        </div>
+          <div class="search-input">
+            <input
+              v-model="searchQuery"
+              type="text"
+              class="elm-input"
+              placeholder="Suche"
+              name="search"
+              id="search"
+              aria-labelledby="search-label"
+              data-variant="outline"
+            />
+            <label class="elm-label" for="search" aria-hidden="true" id="search-label">Suche</label>
+          </div>
 
-        <!-- Filter -->
-        <div>
-          <select
-            class="elm-select"
-            name="isophone-classification"
-            id="isophone-classification"
-            data-variant="outline"
-            v-model="selectedIsophoneFilterIndex"
-          >
-            <option value="all">Alle</option>
-            <option v-for="(label, index) of isophoneLabel" :value="index" :key="index">
-              {{ label }}
-            </option>
-          </select>
-          <label class="elm-label" for="isophone-classification">Einstufung</label>
+          <!-- Filter -->
+          <div>
+            <select
+              class="elm-select"
+              name="isophone-classification"
+              id="isophone-classification"
+              data-variant="outline"
+              v-model="selectedIsophoneFilterIndex"
+            >
+              <option value="all">Alle</option>
+              <option v-for="(label, index) of isophoneLabel" :value="index" :key="index">
+                {{ label }}
+              </option>
+            </select>
+            <label class="elm-label" for="isophone-classification">Einstufung</label>
+          </div>
         </div>
       </div>
-
-      <!-- Address table -->
-      <table>
-        <caption class="sr-only">
-          Betroffene Adressen im gewählten Bereich. Sortierung:
-          {{
-            sortDirection === 'desc' ? 'absteigend' : 'aufsteigend'
-          }}
-          nach
-          {{
-            sortKey
-          }}.
-        </caption>
-        <thead>
-          <tr>
-            <th
-              @click="sortBy('isophoneIndexDay')"
-              :class="getSortClass('isophoneIndexDay')"
-              class="center"
-              data-icon-before="day"
-              data-icon-variant-before="24-outline"
-            ></th>
-            <th
-              @click="sortBy('isophoneIndexNight')"
-              :class="getSortClass('isophoneIndexNight')"
-              class="center"
-              data-icon-before="night"
-              data-icon-variant-before="24-outline"
-            ></th>
-            <th @click="sortBy('city')" :class="getSortClass('city')">Ort</th>
-            <th @click="sortBy('postcode')" :class="getSortClass('postcode')">PLZ</th>
-            <th @click="sortBy('street')" :class="getSortClass('street')">Straße</th>
-            <th class="unsortable small">Nr.</th>
-            <th class="unsortable small numeric">Etagen</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(address) in filteredAndSortedAddresses" :key="address.id">
-            <td
-              :style="{
-                background:
-                  address.isophoneIndexDay === undefined
-                    ? 'transparent'
-                    : getIsophoneColor(address.isophoneIndexDay, 'day')
-              }"
-              class="isophone"
-            >
-              <span v-if="address.isophoneIndexDay !== undefined"
-                >> {{ getImmissionThresholds().day[address.isophoneIndexDay] }}</span
-              >
-            </td>
-            <td
-              :style="{
-                background:
-                  address.isophoneIndexNight === undefined
-                    ? 'transparent'
-                    : getIsophoneColor(address.isophoneIndexNight, 'night')
-              }"
-              class="isophone"
-            >
-              <span v-if="address.isophoneIndexNight !== undefined"
-                >> {{ getImmissionThresholds().day[address.isophoneIndexNight] }}</span
-              >
-            </td>
-            <td>{{ address.city }}</td>
-            <td>{{ address.postcode }}</td>
-            <td>{{ address.street }}</td>
-            <td class="small">{{ address.housenumber }}</td>
-            <td class="small numeric">{{ address.levels }}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
 
-    <p v-if="!addressStore.loading && filteredAndSortedAddresses.length === 0">
-      No addresses found.
-    </p>
+    <!-- Address table -->
+    <table>
+      <caption class="sr-only">
+        Betroffene Adressen im gewählten Bereich. Sortierung:
+        {{
+          sortDirection === 'desc' ? 'absteigend' : 'aufsteigend'
+        }}
+        nach
+        {{
+          sortKey
+        }}.
+      </caption>
+      <thead>
+        <tr>
+          <th
+            @click="sortBy('isophoneIndexDay')"
+            :class="getSortClass('isophoneIndexDay')"
+            class="center"
+            data-icon-before="day"
+            data-icon-variant-before="24-outline"
+          ></th>
+          <th
+            @click="sortBy('isophoneIndexNight')"
+            :class="getSortClass('isophoneIndexNight')"
+            class="center"
+            data-icon-before="night"
+            data-icon-variant-before="24-outline"
+          ></th>
+          <th @click="sortBy('city')" :class="getSortClass('city')">Ort</th>
+          <th @click="sortBy('postcode')" :class="getSortClass('postcode')">PLZ</th>
+          <th @click="sortBy('street')" :class="getSortClass('street')">Straße</th>
+          <th class="unsortable small">Nr.</th>
+          <th class="unsortable small numeric">Etagen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(address) in filteredAndSortedAddresses" :key="address.id">
+          <td
+            :style="{
+              background:
+                address.isophoneIndexDay === undefined
+                  ? 'transparent'
+                  : getIsophoneColor(address.isophoneIndexDay, 'day')
+            }"
+            class="isophone"
+          >
+            <span v-if="address.isophoneIndexDay !== undefined"
+              >> {{ getImmissionThresholds().day[address.isophoneIndexDay] }}</span
+            >
+          </td>
+          <td
+            :style="{
+              background:
+                address.isophoneIndexNight === undefined
+                  ? 'transparent'
+                  : getIsophoneColor(address.isophoneIndexNight, 'night')
+            }"
+            class="isophone"
+          >
+            <span v-if="address.isophoneIndexNight !== undefined"
+              >> {{ getImmissionThresholds().day[address.isophoneIndexNight] }}</span
+            >
+          </td>
+          <td>{{ address.city }}</td>
+          <td>{{ address.postcode }}</td>
+          <td>{{ address.street }}</td>
+          <td class="small">{{ address.housenumber }}</td>
+          <td class="small numeric">{{ address.levels }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="wrapper">
+      <p v-if="!addressStore.loading && filteredAndSortedAddresses.length === 0">
+        Keine Adressen gefunden.
+      </p>
+
+      <button
+        v-if="!addressStore.loading"
+        class="elm-button inform"
+        data-variant="brand-primary"
+        data-width="full"
+        title="Betroffene Anwohnende informieren"
+        type="button"
+        @click="informPeople"
+      >
+        Betroffene Anwohnende informieren
+      </button>
+    </div>
   </div>
 </template>
 
@@ -219,6 +235,10 @@ const filteredAndSortedAddresses = computed(() => {
       })
   )
 })
+
+function informPeople() {
+  console.log(filteredAndSortedAddresses.value)
+}
 </script>
 
 <style scoped>
@@ -301,5 +321,13 @@ td.small {
   display: flex;
   gap: 0.5rem;
   margin: 1rem 0.2rem;
+}
+
+.inform {
+  margin-top: 1rem;
+}
+
+.wrapper {
+  padding: 0 1rem;
 }
 </style>
