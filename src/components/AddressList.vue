@@ -24,7 +24,7 @@
           </div>
 
           <!-- Filter -->
-          <div>
+          <div class="select-classification">
             <select
               class="elm-select"
               name="isophone-classification"
@@ -333,5 +333,9 @@ td.small {
 
 .wrapper {
   padding: 0 1rem;
+}
+
+.select-classification {
+  position: relative;
 }
 </style>
