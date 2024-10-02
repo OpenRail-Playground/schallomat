@@ -1,20 +1,48 @@
 <template>
   <div>
+    <h2>Ergebnis</h2>
     <div v-if="addressStore.loading">Loading...</div>
     <div v-if="addressStore.error">Error: {{ addressStore.error }}</div>
 
     <div v-if="!addressStore.loading && addressStore.addresses.length">
-      <!-- Search input -->
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search addresses..."
-        class="search-input"
-      />
+      <div class="filter">
+        <!-- Search input -->
+
+        <div class="search-input">
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="elm-input"
+            placeholder="Suche"
+            name="search"
+            id="search"
+            aria-labelledby="search-label"
+            data-variant="outline"
+          />
+          <label class="elm-label" for="search" aria-hidden="true" id="search-label">Suche</label>
+        </div>
+
+        <!-- Filter -->
+        <div>
+          <select
+            class="elm-select"
+            name="isophone-classification"
+            id="isophone-classification"
+            data-variant="outline"
+            v-model="selectedIsophoneFilterIndex"
+          >
+            <option value="all">Alle</option>
+            <option v-for="(label, index) of isophoneLabel" :value="index" :key="index">
+              {{ label }}
+            </option>
+          </select>
+          <label class="elm-label" for="isophone-classification">Einstufung</label>
+        </div>
+      </div>
 
       <!-- Address table -->
       <table>
-        <caption>
+        <caption class="sr-only">
           Betroffene Adressen im gewählten Bereich. Sortierung:
           {{
             sortDirection === 'desc' ? 'absteigend' : 'aufsteigend'
@@ -42,7 +70,7 @@
             <th @click="sortBy('postcode')" :class="getSortClass('postcode')">PLZ</th>
             <th @click="sortBy('street')" :class="getSortClass('street')">Straße</th>
             <th class="unsortable small">Nr.</th>
-            <th class="unsortable small">Etagen</th>
+            <th class="unsortable small numeric">Etagen</th>
           </tr>
         </thead>
         <tbody>
@@ -77,7 +105,7 @@
             <td>{{ address.postcode }}</td>
             <td>{{ address.street }}</td>
             <td class="small">{{ address.housenumber }}</td>
-            <td class="small">{{ address.levels }}</td>
+            <td class="small numeric">{{ address.levels }}</td>
           </tr>
         </tbody>
       </table>
@@ -94,7 +122,7 @@ import { useAddressStore } from '../stores/addressStore'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
-import { getImmissionThresholds, getIsophoneColor } from '../services/Isophones'
+import { getImmissionThresholds, getIsophoneColor, isophoneLabel } from '../services/Isophones'
 
 type SortKey = 'postcode' | 'street' | 'city' | 'isophoneIndexDay' | 'isophoneIndexNight'
 type SortDirection = 'asc' | 'desc'
@@ -107,6 +135,8 @@ const { center, isophonesCalculated, isophonesDay, isophonesNight } =
 
 const lon = computed(() => center.value && center.value[0])
 const lat = computed(() => center.value && center.value[1])
+
+const selectedIsophoneFilterIndex = ref<number | 'all'>('all')
 
 // Fetch addresses when the component is mounted
 onMounted(() => {
@@ -151,35 +181,51 @@ function sortBy(key: SortKey) {
 
 // Filter and sort addresses based on the search query and selected sort column
 const filteredAndSortedAddresses = computed(() => {
-  return addressStore.addresses
-    .filter((address) => {
-      const searchLower = searchQuery.value.toLowerCase()
-      return (
-        [address.street, address.housenumber, address.postcode, address.city]
-          .join(' ')
-          .toLowerCase()
-          .includes(searchLower) ||
-        address.postcode?.toString().includes(searchLower) ||
-        address.street?.toLowerCase().includes(searchLower) ||
-        address.city?.toLowerCase().includes(searchLower)
-      )
-    })
-    .sort((a, b) => {
-      const aValue = a[sortKey.value] || ''
-      const bValue = b[sortKey.value] || ''
+  return (
+    addressStore.addresses
+      // filter by category
+      .filter((address) => {
+        if (selectedIsophoneFilterIndex.value === 'all') {
+          return true
+        }
 
-      if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
-      if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
-      return 0
-    })
+        return (
+          address.isophoneIndexDay === selectedIsophoneFilterIndex.value ||
+          address.isophoneIndexNight === selectedIsophoneFilterIndex.value
+        )
+      })
+      // filter by test input
+      .filter((address) => {
+        const searchLower = searchQuery.value.toLowerCase()
+        return (
+          [address.street, address.housenumber, address.postcode, address.city]
+            .join(' ')
+            .toLowerCase()
+            .includes(searchLower) ||
+          address.postcode?.toString().includes(searchLower) ||
+          address.street?.toLowerCase().includes(searchLower) ||
+          address.city?.toLowerCase().includes(searchLower)
+        )
+      })
+      .sort((a, b) => {
+        const aValue = a[sortKey.value] || ''
+        const bValue = b[sortKey.value] || ''
+
+        if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
+        if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
+        return 0
+      })
+  )
 })
 </script>
 
 <style scoped>
 .search-input {
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  width: 100%;
+  flex-grow: 1;
+
+  .elm-input {
+    width: 100%;
+  }
 }
 
 h2 {
@@ -243,5 +289,11 @@ td.small {
 
 .numeric {
   text-align: right;
+}
+
+.filter {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0.2rem;
 }
 </style>
