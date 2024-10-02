@@ -22,7 +22,7 @@
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",
-    "vue3-openlayers": "^11.2.0"
+    "vue3-openlayers": "^11.2.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.1",
