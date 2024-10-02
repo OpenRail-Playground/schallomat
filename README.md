@@ -1,6 +1,6 @@
 # Schall-O-Mat
 
-*Calculates which houses (addresses) are affected by the noise of a construction project and must be informed in advance* based on a simple esstimation of the expected noise level.
+*Calculates which houses (addresses) are affected by the noise of a construction project and must be informed in advance* based on a simple estimation of the expected noise level.
 
 ## Background
 
