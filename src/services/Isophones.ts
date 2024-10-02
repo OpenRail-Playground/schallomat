@@ -4,19 +4,19 @@ export type TimeOfDay = 'day' | 'night'
 // MUSS ZWINGEND in aufsteigender Ordnung sein.
 export const isophoneLevels: Record<TimeOfDay, Record<number, string>> = {
   day: {
-    70: '#cb2e34',
-    65: '#ee7821',
-    60: '#996a29',
-    55: '#f1d90b',
-    50: '#00694c',
-    45: '#66aa22',
+    70: '#824c7c',
+    65: '#891d20',
+    60: '#cb2e34',
+    55: '#ee7821',
+    50: '#996a29',
+    45: '#f1d90b'
   },
   night: {
     70: '#824c7c',
-    50: '#891d20',
-    45: '#cb2e34',
-    40: '#ee7821',
-    35: '#66aa22',
+    50: '#996a29',
+    45: '#f1d90b',
+    40: '#00694c',
+    35: '#66aa22' // assigned twice (see datasheet)
   }
 }
 
