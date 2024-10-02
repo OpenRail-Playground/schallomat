@@ -63,7 +63,9 @@ export const useAddressStore = defineStore('addressStore', {
         )
         console.log({ dayMap: dayMapArray, nightMap: nightMapArray })
 
-        this.addresses = [...dayMapArray, ...nightMapArray]
+        this.addresses = [...dayMapArray, ...nightMapArray].filter(
+          (addr) => addr.city && addr.postcode && addr.street
+        )
       } catch (error) {
         this.error = (error as Error).message
         console.error('Error fetching addresses:', error)

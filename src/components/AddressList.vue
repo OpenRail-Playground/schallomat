@@ -26,18 +26,58 @@
         </caption>
         <thead>
           <tr>
-            <th>Isophone<br />Tag/Nacht</th>
-            <th @click="sortBy('city')" :class="getSortClass('city')">Stadt</th>
-            <th @click="sortBy('street')" :class="getSortClass('street')">Adresse</th>
-            <th class="unsortable">Etagen</th>
+            <th
+              @click="sortBy('isophoneIndexDay')"
+              :class="getSortClass('isophoneIndexDay')"
+              data-icon-before="day"
+              data-icon-variant-before="24-outline"
+            ></th>
+            <th
+              @click="sortBy('isophoneIndexNight')"
+              :class="getSortClass('isophoneIndexNight')"
+              data-icon-before="night"
+              data-icon-variant-before="24-outline"
+            ></th>
+            <th @click="sortBy('city')" :class="getSortClass('city')">Ort</th>
+            <th @click="sortBy('postcode')" :class="getSortClass('postcode')">PLZ</th>
+            <th @click="sortBy('street')" :class="getSortClass('street')">Straße</th>
+            <th class="unsortable small">Nr.</th>
+            <th class="unsortable small">Etagen</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="address in filteredAndSortedAddresses" :key="address.id">
-            <td>{{ address.isophoneIndexDay }} / {{ address.isophoneIndexNight }}</td>
-            <td>{{ address.postcode }} {{ address.city }}</td>
-            <td>{{ address.street }} {{ address.housenumber }}</td>
-            <td class="numeric">{{ address.levels }}</td>
+          <tr v-for="(address, index) in filteredAndSortedAddresses" :key="address.id">
+            <td
+              :style="{
+                background:
+                  address.isophoneIndexDay === undefined
+                    ? 'transparent'
+                    : getIsophoneColor(address.isophoneIndexDay, 'day')
+              }"
+              class="isophone"
+            >
+              <span v-if="address.isophoneIndexDay !== undefined"
+                >> {{ getImmissionThresholds().day[address.isophoneIndexDay] }}</span
+              >
+            </td>
+            <td
+              :style="{
+                background:
+                  address.isophoneIndexNight === undefined
+                    ? 'transparent'
+                    : getIsophoneColor(address.isophoneIndexNight, 'night')
+              }"
+              class="isophone"
+            >
+              <span v-if="address.isophoneIndexNight !== undefined"
+                >> {{ getImmissionThresholds().day[address.isophoneIndexNight] }}</span
+              >
+            </td>
+            <td>{{ address.city }}</td>
+            <td>{{ address.postcode }}</td>
+            <td>{{ address.street }}</td>
+            <td class="small">{{ address.housenumber }}</td>
+            <td class="small">{{ address.levels }}</td>
           </tr>
         </tbody>
       </table>
@@ -54,8 +94,9 @@ import { useAddressStore } from '../stores/addressStore'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useConstructionSiteStore } from '../stores/constructionSiteStore'
 import { storeToRefs } from 'pinia'
+import { getImmissionThresholds, getIsophoneColor } from '../services/Isophones'
 
-type SortKey = 'postcode' | 'street' | 'city'
+type SortKey = 'postcode' | 'street' | 'city' | 'isophoneIndexDay' | 'isophoneIndexNight'
 type SortDirection = 'asc' | 'desc'
 
 const addressStore = useAddressStore()
@@ -99,7 +140,7 @@ function getSortClass(key: SortKey) {
 
 // Method to sort the table by a given column
 // Method to sort the table by a given column
-function sortBy(key: 'postcode' | 'street' | 'city') {
+function sortBy(key: SortKey) {
   if (sortKey.value === key) {
     sortDirection.value = sortDirection.value === 'asc' ? 'desc' : 'asc'
   } else {
@@ -187,6 +228,17 @@ th.asc:after {
 
 th.desc:after {
   content: '↓';
+}
+
+td.isophone {
+  text-wrap: nowrap;
+  font-size: 0.75rem;
+  color: white;
+}
+
+th.small,
+td.small {
+  max-width: 70px;
 }
 
 .numeric {
