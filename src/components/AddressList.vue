@@ -35,8 +35,7 @@
         </thead>
         <tbody>
           <tr v-for="address in filteredAndSortedAddresses" :key="address.id">
-            <td class="numeric">{{ address.isophoneIndexDay }}</td>
-            <td class="numeric">{{ address.isophoneIndexNight }}</td>
+            <td>{{ address.isophoneIndexDay }} / {{ address.isophoneIndexNight }}</td>
             <td>{{ address.city }}</td>
             <td>{{ address.postcode }}</td>
             <td>{{ address.street }} {{ address.housenumber }}</td>
