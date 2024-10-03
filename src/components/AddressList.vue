@@ -4,7 +4,9 @@
       <h2>Ergebnis</h2>
       <p>
         Du kannst die Ergebnisse über die Suche bzw. den Filter für die Immissionsrichtwerte nach
-        AVV Baulärm eingrenzen.
+        AVV Baulärm eingrenzen. Das Ergebnis zeigt die Adressen, die Tags oder Nachts vom Lärm
+        betroffen sind. Nutze den Tag-Nacht-Schalter auf der Karte zur Anzeige des betroffenen
+        Bereichs.
       </p>
       <div v-if="addressStore.loading">Lade Daten...</div>
       <div v-if="addressStore.error">Fehler: {{ addressStore.error }}</div>
@@ -45,9 +47,7 @@
                 {{ label }}
               </option>
             </select>
-            <label class="elm-label" for="isophone-classification"
-              >Einstufung (Tag oder Nacht)</label
-            >
+            <label class="elm-label" for="isophone-classification">Einstufung</label>
           </div>
         </div>
       </div>
@@ -264,10 +264,6 @@ function informPeople() {
   .elm-input {
     width: 100%;
   }
-}
-
-h2 {
-  margin: 0.3rem 0.6rem;
 }
 
 table {
