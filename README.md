@@ -1,6 +1,10 @@
 # Schall-O-Mat
 
-*Calculates which houses (addresses) are affected by the noise of a construction project and must be informed in advance* based on a simple estimation of the expected noise level.
+<div style="display: flex; justify-content: center; justify-items: center; gap: 1rem;">
+  <p>Calculates which houses (addresses) are affected by the noise of a construction project and must be informed in
+advance based on a simple estimation of the expected noise level.</p>
+  <img alt="Dreiländerhack Logo" src="src/assets/logo.png"/>
+</div>
 
 ## Background
 
@@ -8,7 +12,9 @@
   <img alt="Dreiländerhack Logo" src="img/3LH.png" width="220"/>
 </p>
 
-This project has been initiated during the [Dreiländerhack 2024](https://data.deutschebahn.com/opendata/Veranstaltungen/DreiLaenderHack-2024-12737424), a joint hackathon organised by the railway companies ÖBB, DB, and SBB.
+This project has been initiated during
+the [Dreiländerhack 2024](https://data.deutschebahn.com/opendata/Veranstaltungen/DreiLaenderHack-2024-12737424), a joint
+hackathon organised by the railway companies ÖBB, DB, and SBB.
 
 ## Install
 
@@ -24,11 +30,14 @@ The content of this repository is licensed under the [Apache 2.0 license](LICENS
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and
+disable Vetur).
 
 ## Type Support for `.vue` Imports in TS
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for
+type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the
+TypeScript language service aware of `.vue` types.
 
 ## Customize configuration
 
