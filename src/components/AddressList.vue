@@ -227,28 +227,27 @@ const filteredAndSortedAddresses = computed(() => {
         address.isophoneLevelNight === selectedIsophoneFilterIndex.value.night
       )
     })
-  // filter by test input
-  /*.filter((address) => {
-    const searchLower = searchQuery.value.toLowerCase()
-    return (
-      [address.street, address.housenumber, address.postcode, address.city]
-        .join(' ')
-        .toLowerCase()
-        .includes(searchLower) ||
-      address.postcode?.toString().includes(searchLower) ||
-      address.street?.toLowerCase().includes(searchLower) ||
-      address.city?.toLowerCase().includes(searchLower)
-    )
-  })
-  .sort((a, b) => {
-    const aValue = a[sortKey.value] || ''
-    const bValue = b[sortKey.value] || ''
+    // filter by test input
+    .filter((address) => {
+      const searchLower = searchQuery.value.toLowerCase()
+      return (
+        [address.street, address.housenumber, address.postcode, address.city]
+          .join(' ')
+          .toLowerCase()
+          .includes(searchLower) ||
+        address.postcode?.toString().includes(searchLower) ||
+        address.street?.toLowerCase().includes(searchLower) ||
+        address.city?.toLowerCase().includes(searchLower)
+      )
+    })
+    .sort((a, b) => {
+      const aValue = a[sortKey.value] || ''
+      const bValue = b[sortKey.value] || ''
 
-    if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
-    if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
-    return 0
-  })
-)*/
+      if (aValue < bValue) return sortDirection.value === 'asc' ? -1 : 1
+      if (aValue > bValue) return sortDirection.value === 'asc' ? 1 : -1
+      return 0
+    })
 
   return filteredAndSortedResult
 })
