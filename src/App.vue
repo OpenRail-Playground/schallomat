@@ -140,15 +140,6 @@ header.rea-header {
   z-index: 1;
 }
 
-nav {
-  display: flex;
-  gap: 1rem;
-}
-
-nav > a {
-  text-decoration: none;
-}
-
 #app .cmp-brand img {
   height: initial;
   position: relative;
@@ -160,6 +151,14 @@ nav > a {
   #app .cmp-brand img {
     transform: scale(0.8);
     left: -1rem;
+  }
+
+  #mainnavigation.cmp-mainnavigation:has(> input[type='checkbox'][id]:checked) {
+    margin-inline-start: 0;
+  }
+
+  .cmp-mainnavigation > ul {
+    height: fit-content;
   }
 }
 </style>

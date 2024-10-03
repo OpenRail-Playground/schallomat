@@ -16,7 +16,7 @@
 </template>
 
 <style scoped>
-div {
+.base-layout {
   padding: 0 1rem;
 }
 </style>
