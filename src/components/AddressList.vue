@@ -250,7 +250,6 @@ const filteredAndSortedAddresses = computed(() => {
   })
 )*/
 
-  console.log(filteredAndSortedResult)
   return filteredAndSortedResult
 })
 

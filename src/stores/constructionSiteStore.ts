@@ -42,7 +42,7 @@ export const useConstructionSiteStore = defineStore('constructionSiteStore', {
       this.currentStep = 3
       this.isophonesCalculated = true
 
-      console.log('DBG', { isophonesDay: this.isophonesDay, isophonesNight: this.isophonesNight })
+      console.log({ isophonesDay: this.isophonesDay, isophonesNight: this.isophonesNight })
     },
 
     setStep(step: number) {

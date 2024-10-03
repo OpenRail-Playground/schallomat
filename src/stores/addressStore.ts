@@ -68,7 +68,6 @@ export const useAddressStore = defineStore('addressStore', {
           lat,
           'isophoneLevelNight'
         )
-        console.log({ dayMap: dayMapArray, nightMap: nightMapArray })
 
         this.addresses = [...dayMapArray, ...nightMapArray].filter(
           (addr) => addr.city && addr.postcode && addr.street

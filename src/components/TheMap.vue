@@ -155,11 +155,9 @@ function hoverFeature(event: MapBrowserEvent<PointerEvent>) {
     layerFilter
   })
   const filteredFeatures = features.filter((feature) => {
-    console.log('layer', feature.getProperties().layer)
     return feature.getProperties().layer === 'Building'
   })
   highlightedFeatures.value = filteredFeatures[0] ? [filteredFeatures[0]] : []
-  console.log(highlightedFeatures.value)
 }
 
 const styleFunction = (feature: RenderFeature, style: Style) => {
